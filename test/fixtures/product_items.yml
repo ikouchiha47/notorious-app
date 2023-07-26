@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ulid: MyString
+  product_id: MyString
+  quantity: MyString
+  measure_in_inches: MyString
+  measured_part: MyString
+  locations: MyString
+
+two:
+  ulid: MyString
+  product_id: MyString
+  quantity: MyString
+  measure_in_inches: MyString
+  measured_part: MyString
+  locations: MyString
