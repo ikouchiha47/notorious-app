@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   root to: 'home#index'
-  resources :categories, only: %i[show index]
+  resources :categories, only: %i[index]
+  resources :products, only: %i[show]
 end
