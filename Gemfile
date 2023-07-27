@@ -74,3 +74,5 @@ end
 gem "ulid", "~> 1.4"
 
 gem "simple_form", "~> 5.2"
+
+gem "pry", "~> 0.14.2"

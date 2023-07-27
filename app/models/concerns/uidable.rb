@@ -1,6 +1,6 @@
 require 'ulid'
 
-module ULiDAble
+module Uidable
   extend ActiveSupport::Concern
 
   included do
@@ -8,6 +8,6 @@ module ULiDAble
   end
 
   def set_ulid
-    self.ulid = ULID.generate.to_s
+    self.id = ULID.generate.to_s
   end
 end

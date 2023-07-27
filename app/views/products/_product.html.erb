@@ -1,0 +1,10 @@
+<div class="card" id="<%= dom_id product %>>">
+  <% if product.product_images.present? %> 
+      <div class="product_image">
+          <%= image_tag product.promoted_image %>
+      </div>
+  <% end %>
+  <div class="card_title">
+      <h3><%= product.title %></h3>
+  </div>
+</div>

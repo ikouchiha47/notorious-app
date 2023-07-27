@@ -1,0 +1,14 @@
+* {
+    /* border: 1px solid blue; */
+}
+
+body {
+    max-width: 80vw;
+    margin: 0 auto;
+    background-color: #fffcf8;
+
+}
+
+.clean_anchor, .clean_anchor:visited, .clean_anchor:hover {
+    text-decoration: none;
+}

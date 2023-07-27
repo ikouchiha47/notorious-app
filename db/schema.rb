@@ -1,0 +1,102 @@
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
+#
+# It's strongly recommended that you check this file into your version control system.
+
+ActiveRecord::Schema[7.0].define(version: 2023_07_26_224716) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "carts", id: false, force: :cascade do |t|
+    t.string "cart_id", null: false
+    t.string "user_id", null: false
+    t.string "product_item_id", null: false
+    t.integer "quantity", default: 0, null: false
+    t.string "cart_state", default: "processing", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id"], name: "index_carts_on_cart_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "parent_category_id"
+    t.index ["parent_category_id"], name: "index_categories_on_parent_category_id"
+  end
+
+  create_table "orders", id: false, force: :cascade do |t|
+    t.string "id", null: false
+    t.string "cart_id", null: false
+    t.string "user_id", null: false
+    t.string "address_id", null: false
+    t.integer "amount", default: 0, null: false
+    t.string "payment_status", default: "pending", null: false
+    t.string "order_status", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["id"], name: "index_orders_on_id", unique: true
+  end
+
+  create_table "product_items", id: :string, force: :cascade do |t|
+    t.string "product_id", null: false
+    t.integer "quantity", default: 10, null: false
+    t.integer "measure_in_inches", null: false
+    t.string "measured_part"
+    t.text "locations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_product_items_on_product_id"
+  end
+
+  create_table "products", id: :string, force: :cascade do |t|
+    t.string "sku", null: false
+    t.string "sku_provider", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.integer "price", null: false
+    t.string "gender", default: "unisex", null: false
+    t.text "images", null: false
+    t.boolean "available", default: false, null: false
+    t.boolean "is_limited_edition", default: true, null: false
+    t.integer "category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "is_featured", default: false, null: false
+    t.index ["sku"], name: "index_products_on_sku"
+  end
+
+  create_table "tokens", id: false, force: :cascade do |t|
+    t.string "token_type", null: false
+    t.string "token", null: false
+    t.datetime "expires_at", null: false
+    t.string "refresh_token"
+    t.datetime "refresh_expires_at"
+    t.boolean "revoked", default: false, null: false
+    t.string "user_id", null: false
+    t.index ["token", "refresh_token"], name: "index_tokens_on_token_and_refresh_token"
+    t.index ["token", "token_type"], name: "index_tokens_on_token_and_token_type"
+    t.index ["user_id"], name: "index_tokens_on_user_id"
+  end
+
+  create_table "users", id: :string, force: :cascade do |t|
+    t.string "user_type", default: "guest", null: false
+    t.string "email", null: false
+    t.string "hashed_password", null: false
+    t.integer "country_code"
+    t.integer "number"
+    t.boolean "verified", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+  end
+
+end

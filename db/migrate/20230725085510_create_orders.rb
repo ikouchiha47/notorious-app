@@ -15,7 +15,7 @@ class CreateOrders < ActiveRecord::Migration[7.0]
     end
 
     create_table :orders, id: false do |t|
-      t.string :ulid, null: false, index: { unique: true }
+      t.string :id, null: false, index: { unique: true }
       t.string :cart_id, null: false
       t.string :user_id, null: false
       t.string :address_id, null: false
