@@ -16,13 +16,11 @@ function toggleMenu() {
     // Toggle the menu on click of the menu icon
     $menuIcon.onclick = function() {
         $toggle($menu);
-        $toggleClass($menu, "show");
     };
 
     // Hide the menu on click of the close icon
     $closeIcon.onclick = function() {
         $hide($menu);
-        $toggleClass($menu, "show");
     };
 }
 
