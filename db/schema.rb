@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_26_224716) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_27_231117) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -49,11 +49,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_26_224716) do
   create_table "product_items", id: :string, force: :cascade do |t|
     t.string "product_id", null: false
     t.integer "quantity", default: 10, null: false
-    t.integer "measure_in_inches", null: false
-    t.string "measured_part"
     t.text "locations"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "details", default: {}, null: false
     t.index ["product_id"], name: "index_product_items_on_product_id"
   end
 
@@ -71,6 +70,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_26_224716) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_featured", default: false, null: false
+    t.string "product_type", default: "over::tee", null: false
     t.index ["sku"], name: "index_products_on_sku"
   end
 

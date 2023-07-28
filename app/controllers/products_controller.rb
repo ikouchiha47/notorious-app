@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[ show edit update destroy ]
+  before_action :set_product, only: %i[ edit update destroy ]
 
   # GET /products or /products.json
   def index
@@ -8,7 +8,10 @@ class ProductsController < ApplicationController
 
   # GET /products/1 or /products/1.json
   def show
-    @product_details = ProductItem.where(product_id: @product.id) or not_found
+    # @product_details = ProductItem.where(product_id: @product.id) or not_found
+    details = ProductDetail.new(params[:id])
+    @product_details = details.get or not_found
+    @product = details.product
   end
 
   # GET /products/new

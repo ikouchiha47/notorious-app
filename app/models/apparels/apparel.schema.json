@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "style": {
+      "type": "string"
+    },
+    "measured": {
+      "type": "string"
+    },
+    "details": {
+      "type": "object",
+      "properties": {
+        "sizes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "colors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "chest_sizes": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "shoulder_sizes": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "waist_sizes": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "taper_angles": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  },
+  "required": ["style", "measured", "details"]
+}

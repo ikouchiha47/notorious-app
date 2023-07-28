@@ -1,8 +1,10 @@
 class ProductItem < ApplicationRecord # :nodoc:
   include Uidable
+ 
+
+  belongs_to :product
 
   validates :product_id, presence: true
   validates :quantity, numericality: { only_integer: true }
-  validates :measure_in_inches, numericality: { only_integer: true, in: 10..100 }
-  validates :measured_part, presence: true
+  validates :details, presence: true
 end

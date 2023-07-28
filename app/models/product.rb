@@ -1,7 +1,15 @@
 class Product < ApplicationRecord # :nodoc:
   include Uidable
 
-  # self.primary_key = 'ulid'
+  GARMENT_TYPES = {
+    "#{::GarmentTypes::OVER_TEE}" => "Oversized Tees",
+    "#{::GarmentTypes::REGULAR_TEE}" => "Regular Tees",
+    "#{::GarmentTypes::PANTIES}" => "Baggy Tracks",
+  }
+
+
+  has_one :product_item
+  belongs_to :category
 
   before_validation :set_sku_provider, :set_gender
 
@@ -19,6 +27,7 @@ class Product < ApplicationRecord # :nodoc:
 
   validates :category_id, presence: true
 
+
   # created_at, #updated_at
 
   def promoted_image
@@ -31,6 +40,20 @@ class Product < ApplicationRecord # :nodoc:
   def product_images
     images.split(',')
   end
+
+  def oversized_tee?
+    product_type == ::GarmentTypes::OVER_TEE
+  end
+
+
+  def regular_tee?
+    product_type == ::GarmentTypes::REGULAR_TEE
+  end
+
+  def pants?
+    product_type == ::GarmentTypes::PANTIES
+  end
+
 
   def self.available
     where({ available: true })
