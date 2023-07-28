@@ -2,6 +2,8 @@ class CategoriesController < ApplicationController
   before_action :set_category, only: :show
 
   def index
+    add_breadcrumb("Products", products_url)
+
     @categories = Category.all
     @products = Product.available.where(category_id: @categories.pluck(:id))
   end

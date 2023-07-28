@@ -1,7 +1,13 @@
-<h1>Details</h1>
-
-<div id="product_details_wrapper">
-    <div class="product_details__image_wrapper">
+<div
+    id="product_details_wrapper"
+    data-controller="cart-add"
+    data-cart-add-target="productItem"
+    data-cart-url="<%= carts_url %>"
+    data-item-id="<%= @product_details[:item_id] %>"
+>
+    <div
+        class="product_details__image_wrapper"
+    >
         <!-- need to show all image in c arousal -->
         <%= image_tag @product.promoted_image %>
     </div>
@@ -13,23 +19,38 @@
             <% if @product.description.present? %>
                 <em><%= @product.description %></em>
             <% else %>
-                <em>Get your X factor out. Professor mixed up in the lab, so did we.</em>
+                <em>
+                    Get your X factor out. Professor mixed up in the lab, so did we.
+                </em>
             <% end %>
         </section>
 
 
         <section id="chaufferr">
             <p class="price"><%= format_price @product.price %></p>
+
             <div class="dropdown">
-                <select class="dropdown-select product_details__cta_btn">
-                    <option value="" disabled selected>Select Option</option>
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
-                </select>
+                <%= select(
+                    :cart,
+                    :size_id,
+                    size_options_for_select(@product_details.size_chart),
+                    { prompt: 'Choose a Size' },
+                    { class: 'dropdown-select product_details__cta_btn',
+                     data: {cart_add_target: 'selectSize' }}
+                ) %>
             </div>
 
-            <button class="add-to-cart-btn product_details__cta_btn">Add to Cart</button>
+            <button
+                id="add-to-cart-btn"
+                data-action="cart-add#addToCart"
+                class="product_details__cta_btn"
+            >
+                Add to Cart
+            </button>
+
+            <button id="checkout-btn" class="product_details__cta_btn">
+                Checkout
+            </button>
         </section>
 
     </div>

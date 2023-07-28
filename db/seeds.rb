@@ -55,7 +55,7 @@ def build_items
   products = Product.take(9)
 
   over_tshirt = {
-    "style": 'oversized',
+    "style": 'over::tee',
     "details": {
       "shoulder_sizes": [18, 19, 20],
       "chest_sizes": [40, 42, 44],
@@ -64,7 +64,7 @@ def build_items
     }
   }
   tshirt = {
-    "style": 'regular',
+    "style": 'regular::tee',
     "details": {
       "shoulder_sizes": [18, 19, 20],
       "chest_sizes": [40, 42, 44],
@@ -75,7 +75,7 @@ def build_items
   }
 
   panties = {
-    "style": 'regular',
+    "style": 'panties',
     "details": {
       "waist_sizes": [32, 34, 36, 40],
       "taper_angle": 2,
@@ -100,6 +100,13 @@ def build_items
     create_each(products[i], panties)
   end
 end
+
+def create_guest_user
+  User.first_or_create!(password: 'ikea', country_code: 0, number: 0, verified: false, email: 'vindy.ssa@mailinator.com')
+end
+
+
+create_guest_user
 
 build_categories
 build_products

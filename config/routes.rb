@@ -6,5 +6,7 @@ Rails.application.routes.draw do
 
   root to: 'home#index'
   resources :categories, only: %i[index]
-  resources :products, only: %i[show]
+  resources :products, only: %i[show index]
+
+  resources :carts, except: [:new]
 end

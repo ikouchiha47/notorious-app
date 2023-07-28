@@ -1,0 +1,12 @@
+<div id="breadcrumb">
+    <% unless controller_name == "home" && action_name == "index" %>
+        <%= link_to "Home", root_path %> &gt;
+    <% end %>
+    <% breadcrumbs.each do |item| %>
+        <% if item == breadcrumbs.last %>
+            <%= item[:title] %>
+        <% else %>
+            <%= link_to item[:title], item[:url] %> &gt;
+        <% end %>
+    <% end %>
+</div>

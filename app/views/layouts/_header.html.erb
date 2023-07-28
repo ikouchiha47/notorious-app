@@ -3,9 +3,12 @@
         <%= link_to 'tee-tees', root_path, { class: "clean_anchor" } %>
     </div>
     <div id="header-icons">
-        <ul id="header-actions">
+        <ul
+            id="header-actions"
+            data-action="cart-add:updated@window->cart-count#update"
+            data-controller="cart-count">
             <li>login</li>
-            <li>cart</li>
+            <li data-cart-count-target="itemCount">cart</li>
         </ul>
     </div>
 

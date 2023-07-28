@@ -1,5 +1,7 @@
 # Get the product detail with usable garment info
 class ProductDetail
+  DEFAULT_MEASUREMENT_UNIT = "inch"
+
   attr_reader :product
 
   def initialize(product_id)
@@ -8,15 +10,16 @@ class ProductDetail
 
   def get
     @product = Product
-               .includes(:product_item, :category)
-               .where(products: { id: @product_id })
-               .first
+      .includes(:product_item, :category)
+      .where(products: { id: @product_id })
+      .first
 
     return if @product.nil?
 
     details = @product.product_item.details
     size_details = details["details"]
 
+    measure_unit = get_measurement(details["measure_unit"])
     style = details["style"]
     style = Product::GARMENT_TYPES[style]
 
@@ -27,22 +30,36 @@ class ProductDetail
     waist_sizes = details["waist_sizes"] || []
     taper_angles = details["taper_angles"] || []
 
+    item_id = @product.product_item.id
+
     if @product.pants?
       ::Apparels::Panties.new(
+        item_id:,
         style:,
-        colors: details["colors"],
+        measure_unit:,
+        colors: size_details["colors"] || ["black"],
         sizes:,
         waist_sizes:,
         taper_angles:
       )
     else
       ::Apparels::Tshirt.new(
+        item_id:,
         style:,
-        colors: details["colors"],
+        measure_unit:,
+        colors: size_details["colors"] || ["black"],
         sizes:,
         shoulder_sizes:,
         chest_sizes:
       )
     end
   end
+
+  private
+
+  def get_measurement(measured_unit)
+    measured_unit.present? ? measured_unit : DEFAULT_MEASUREMENT_UNIT
+  end
+
+
 end
