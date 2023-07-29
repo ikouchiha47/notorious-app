@@ -9,6 +9,7 @@
 :root {
     --blue: blue;
     --white: #fffcf8;
+    --error_color:red;
 }
 
 
@@ -30,6 +31,22 @@ body {
 
 .x_right {
     transform: rotate(45deg) translate(-5px, -6px);
+}
+
+.error {
+    color: var(--error_color);
+}
+
+.inline_block {
+    display: inline-block;
+}
+
+.vanish {
+    opacity: 0;
+}
+
+.appear {
+    opacity: 1;
 }
 
 /* commons.css end */
@@ -323,6 +340,7 @@ body {
     display: flex;
     flex-direction: row;
     gap: 10px;
+    align-items: flex-end;
 }
 
 .cta_component .cta_icon img {

@@ -35,16 +35,17 @@
                     src="<%= asset_path('size_guide.svg') %>"
                 />
                 </div>
-            <div class="dropdown">
-                <%= select(
-                    :cart,
-                    :size_id,
-                    size_options_for_select(@product_details.size_chart),
-                    { prompt: 'Choose a Size' },
-                    { class: 'dropdown-select product_details__cta_btn',
-                     data: {cart_add_target: 'selectSize' }}
-                ) %>
-            </div>
+                <div class="dropdown">
+                    <%= select(
+                        :cart,
+                        :size_id,
+                        size_options_for_select(@product_details.size_chart),
+                        { prompt: 'Choose a Size' },
+                        { class: 'dropdown-select product_details__cta_btn',
+                        data: {cart_add_target: 'selectSize' }}
+                    ) %>
+                </div>
+                <span class="inline_block error vanish" data-cart-add-target="sizeError"></span>
             </div>
 
             <div class="cta_component">

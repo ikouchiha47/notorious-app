@@ -31,6 +31,13 @@
     min-width: 120px;
 }
 
+
+@media (min-width: 992px) {
+    #header-logo {
+        padding: 20px 195px;
+    }
+}
+
 #header-logo a {
     color: var(--white);
     font-weight: bold;
@@ -55,9 +62,10 @@
 }
 
 #header-actions li {
-    width: 30px;
     height: 30px;
-    padding: 10px 20px 0;
+    padding: 0px 20px 0;
+    font-size: 1.2rem;
+    margin-right: 4rem;
 }
 
 #featured-gallery {

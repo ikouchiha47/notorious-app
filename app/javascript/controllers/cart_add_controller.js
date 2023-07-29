@@ -2,7 +2,12 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="cart-add"
 export default class extends Controller {
-    static targets = ["selectSize", "productItem", "addToCartIcon"];
+    static targets = [
+        "selectSize",
+        "productItem",
+        "addToCartIcon",
+        "sizeError"
+    ];
 
     connect() {
         console.log(this.selectSizeTarget);
@@ -15,6 +20,16 @@ export default class extends Controller {
         let size = this.selectSizeTarget.value;
         let itemID = this.productItemTarget.dataset.itemId;
 
+        if(!size) {
+            this.showError("Please select size");
+            console.error("invalid size");
+            return;
+        }
+
+        if(!itemID) {
+            console.error("something went wrong");
+            return;
+        }
         let pepper = sessionStorage && sessionStorage.getItem("pepper");
         if(!pepper) {
             let el = document.querySelector("#pf");
@@ -50,6 +65,29 @@ export default class extends Controller {
         } catch(e) {
             console.error(e);
         }
+    }
+
+    showError(message) {
+        const errTgt = this.sizeErrorTarget;
+
+        errTgt.value = message;
+
+        let classList = Array.from(errTgt.classList).reduce((acc, className) => {
+            acc[className] = className;
+            return acc;
+        }, {});
+
+        if (classList['vanish'] && !classList['appear']) {
+            errTgt.innerHTML = message;
+            classList = { ...classList, vanish: null, appear: 'appear'};
+
+            errTgt.className = Object.keys(classList).join(' ');
+        }
+
+        setTimeout(function() {
+            errTgt.classList.remove('appear');
+            errTgt.innerHTML = '';
+        }, 1200);
     }
 }
 
