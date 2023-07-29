@@ -4,7 +4,7 @@ module Uidable
   extend ActiveSupport::Concern
 
   included do
-    before_create :set_ulid
+    before_validation :set_ulid, on: :create
   end
 
   def set_ulid

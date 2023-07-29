@@ -9,4 +9,7 @@ Rails.application.routes.draw do
   resources :products, only: %i[show index]
 
   resources :carts, except: [:new]
+
+  # get '/peppermint.js', to: 'home#peppermint_spray', format: 'js'
+
 end

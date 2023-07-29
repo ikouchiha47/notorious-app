@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="cart-add"
 export default class extends Controller {
-    static targets = ["selectSize", "productItem"];
+    static targets = ["selectSize", "productItem", "addToCartIcon"];
 
     connect() {
         console.log(this.selectSizeTarget);
@@ -15,70 +15,41 @@ export default class extends Controller {
         let size = this.selectSizeTarget.value;
         let itemID = this.productItemTarget.dataset.itemId;
 
-        let tempCartID = null;
-
-        if(!window.sessionStorage) {
-            return;
+        let pepper = sessionStorage && sessionStorage.getItem("pepper");
+        if(!pepper) {
+            let el = document.querySelector("#pf");
+            if(el && el.dataset) {
+                pepper = el.dataset.pepper;
+            }
         }
 
-        let cartToken = window.sessionStorage.getItem("cartToken");
+        let cartItem = { size, itemID };
 
-        // For create it will be /carts. for update it will be /carts/:id
-        // So we just only need the first part
+        try {
+            let data = localStorage.getItem(pepper) || '[]';
+            let itemsInCart = JSON.parse(data);
 
-        let submitURL = this.productItemTarget.dataset.cartUrl;
-        let method = "post";
+            data = JSON.stringify(itemsInCart.concat(cartItem));
 
-        console.log('cartToken', cartToken);
+            localStorage.setItem(pepper, data);
 
-        if(!!cartToken) {
-            submitURL = `${submitURL}/${cartToken}`;
-            method = "patch";
+            if(!this.addToCartIconTarget.classList.contains('fill_animation')){
+                this.addToCartIconTarget.classList.add('fill_animation');
+            } 
+            // we will change this such that instead of
+            // cart-add, we can have generic handler.
+            // or like each kind will have type of event
+            // defined types. one for notification
+            // TODO: handle notifications
+            this.dispatch(
+                'updated',
+                { detail: { totalItems: itemsInCart.length + 1 } }
+            );
+
+            // dispatch event
+        } catch(e) {
+            console.error(e);
         }
-
-
-        let formData = new FormData();
-        formData.append("cart[size]", size);
-        formData.append("cart[item_id]", itemID);
-
-        if(!!cartToken) {
-            formData.append("cart[token]", cartToken);
-        }
-        const csrfToken = document
-              .querySelector("meta[name='csrf-token']")
-              .getAttribute('content');
-
-        const headers = new Headers();
-        headers.append('X-CSRF-Token', csrfToken);
-
-        let that = this;
-
-
-
-        fetch(submitURL, {
-            method: method,
-            headers: headers,
-            body: formData,
-        })
-            .then(resp => resp.json())
-            .then(data => {
-                if(!data.cart_token || data.cart_token === false) {
-                    console.error("something went wrong");
-                    return;
-                }
-
-                sessionStorage.setItem('cartToken', data.cart_token);
-                sessionStorage.setItem('cartItems', data.total_items);
-
-                that.dispatch(
-                    'updated',
-                    { detail: { totalItems: data.total_items } }
-                );
-            })
-            .catch(err => {
-                console.error(err);
-            });
     }
-
 }
 

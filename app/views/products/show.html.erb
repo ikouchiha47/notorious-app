@@ -29,6 +29,12 @@
         <section id="chaufferr">
             <p class="price"><%= format_price @product.price %></p>
 
+            <div class="cta_component">
+                <div class="cta_icon" id="size-chart">
+                <img
+                    src="<%= asset_path('size_guide.svg') %>"
+                />
+                </div>
             <div class="dropdown">
                 <%= select(
                     :cart,
@@ -39,14 +45,25 @@
                      data: {cart_add_target: 'selectSize' }}
                 ) %>
             </div>
+            </div>
 
-            <button
-                id="add-to-cart-btn"
-                data-action="cart-add#addToCart"
-                class="product_details__cta_btn"
-            >
-                Add to Cart
-            </button>
+            <div class="cta_component">
+
+                <div class="cta_icon"
+                     data-cart-add-target="addToCartIcon"
+                     id="cart-icon"
+                >
+                    <img
+                        src="<%= asset_path ('cart_icon.svg') %>"/>
+                </div>
+                <button
+                    id="add-to-cart-btn"
+                    data-action="cart-add#addToCart"
+                    class="product_details__cta_btn"
+                >
+                    Add to Cart
+                </button>
+            </div>
 
             <button id="checkout-btn" class="product_details__cta_btn">
                 Checkout
