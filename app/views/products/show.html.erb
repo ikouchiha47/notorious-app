@@ -3,6 +3,7 @@
     data-controller="cart-add"
     data-cart-add-target="productItem"
     data-cart-url="<%= carts_url %>"
+    data-is-logged-in="<%= logged_in? ? 'true' : 'false' %>"
     data-item-id="<%= @product_details[:item_id] %>"
 >
     <div
@@ -25,15 +26,15 @@
             <% end %>
         </section>
 
+        <p class="price"><%= format_price @product.price %></p>
 
         <section id="chaufferr">
-            <p class="price"><%= format_price @product.price %></p>
 
             <div class="cta_component">
                 <div class="cta_icon" id="size-chart">
-                <img
-                    src="<%= asset_path('size_guide.svg') %>"
-                />
+                    <img
+                        src="<%= asset_path('size_guide.svg') %>"
+                    />
                 </div>
                 <div class="dropdown">
                     <%= select(
@@ -42,34 +43,51 @@
                         size_options_for_select(@product_details.size_chart),
                         { prompt: 'Choose a Size' },
                         { class: 'dropdown-select product_details__cta_btn',
-                        data: {cart_add_target: 'selectSize' }}
+                            data: {cart_add_target: 'selectSize' }}
                     ) %>
                 </div>
-                <span class="inline_block error vanish" data-cart-add-target="sizeError"></span>
             </div>
 
             <div class="cta_component">
-
-                <div class="cta_icon"
-                     data-cart-add-target="addToCartIcon"
-                     id="cart-icon"
-                >
+                <div class="cta_icon" id="cart-icon">
                     <img
                         src="<%= asset_path ('cart_icon.svg') %>"/>
                 </div>
-                <button
-                    id="add-to-cart-btn"
-                    data-action="cart-add#addToCart"
-                    class="product_details__cta_btn"
-                >
-                    Add to Cart
-                </button>
+                <% if logged_in? %>
+                    <button
+                        id="add-to-cart-btn"
+                        data-action="cart-add#addToCart"
+                        data-cart-add-target="addToCartIcon"
+                        class="product_details__cta_btn">
+                        Add to Cart
+                    </button>
+                <% end %>
+
+                <%= simple_form_for @form, url: guest_buy_checkouts_url, method: :post, html: {data: { action: 'submit->cart-add#directBuy'}} do |f| %>
+                    <%= f.input :item_id,
+                                as: :hidden,
+                                input_html: {
+                                    data: {'cart-add-target': 'buyNowItemID' },
+                                    value: @product_details[:item_id] }
+                    %>
+                    <%= f.input :size,
+                                as: :hidden,
+                                input_html: {
+                                    data: {'cart-add-target': 'buyNowSize'} }
+                    %>
+                    <%= f.input :quantity,
+                                as: :hidden,
+                                input_html: {
+                                    data: {'cart-add-target': 'buyNowQuantity'},
+                                    value: 1 }
+                    %>
+                    <%= f.button :submit,
+                                 "Buy Now",
+                                 id: "checkout-btn",
+                                 class: "product_details__cta_btn"
+                    %>
+                <% end %>
             </div>
-
-            <button id="checkout-btn" class="product_details__cta_btn">
-                Checkout
-            </button>
         </section>
-
     </div>
 </div>

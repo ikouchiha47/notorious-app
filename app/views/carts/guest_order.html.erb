@@ -1,0 +1,75 @@
+<div class="checkout_wrapper">
+    <div class="shopping_info">
+        <header id="guest-shopping-info-header">
+            <span class="inline_block">Billing Details</span>
+        </header>
+
+        <section id="guest-shopping-list">
+            <%= image_tag @product_item.product.promoted_image %>
+            <div id="guest-pricing-info">
+                <span class="inline_block"><%= format_price @product_item.product.price %></span>
+            </div>
+            <div id="guest-delivery-faq">
+                <p>
+                It takes 7 days for the item to delivered by our service providers.
+                You can return the product to us personally if you don't like it.
+                </p>
+
+                <p>
+                Please reach out to us, and we will schedule a pickup.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <div class="checkout">
+        <%= simple_form_for @form, url: checkouts_url, method: :post, defaults: { wrapper_html: { class: 'guest_info_form_wrapper'}} do |f| %>
+            <section id="user_info" class="guest_checkout_info_section">
+                <h3>Contact Info</h3>
+                <%= f.input :email, required: true %>
+            </section>
+
+            <section id="shipping_info" class="guest_checkout_info_section">
+                <h3>Shipping Details</h3>
+                <%= f.input :address_line_a, as: :text, required: true %>
+                <%= f.input :address_line_b, as: :text %>
+                <%= f.input :zip_code, required: true %>
+                <div class="phone_number_wrapper">
+                    <%= f.select :phone_country_code, country_code_list, required: true %>
+                    <%= f.input :phone_number, as: :integer, required: true, wrapper_html: { id: 'guest-phone-number' } %>
+                </div>
+            </section>
+
+            <%= f.simple_fields_for @form.item, defaults: {wrapper_html: {class: ''}} do |ff| %>
+                <%= ff.input :item_id, as: :hidden %>
+                <%= ff.input :size, as: :hidden %>
+                <%= ff.input :quantity, as: :hidden %>
+            <% end %>
+
+            <section class="flex-row guest_checkout_info_section" id="payment_info">
+                <h3>Billing Details</h3>
+                <div class="flex-col">
+                    <span class="inline_block">Total:</span>
+                    <span class="inline_block">
+                        <%= format_price @total_amount %>
+                    </span>
+                </div>
+                <div class="flex-col">
+                    <span class="inline_block">Shipping: </span>
+                    <span class="inline_block">0</span>
+                </div>
+                <span class="inline_block"></span>
+                <div class="flex-col">
+                    <span class="inline_block bold">Total </span>
+                    <span class="inline_block bold">
+                        <%= format_price(@total_amount + @shipping) %>
+                    </span>
+                </div>
+            </section>
+
+            <section id="pay-me-now">
+                <%= f.button :submit, "Place Order", { class: 'place_order_btn_lg' } %>
+            </section>
+        <% end %>
+    </div>
+</div>

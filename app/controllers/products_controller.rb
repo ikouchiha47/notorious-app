@@ -7,12 +7,12 @@ class ProductsController < ApplicationController
   end
 
   def show
-    # @product_details = ProductItem.where(product_id: @product.id) or not_found
-
     details = ProductDetail.new(params[:id])
+
     @product_details = details.get or not_found
     @product = details.product
 
+    @form = GuestBuyForm.new(quantity: 1)
 
     add_breadcrumb(@product.title, nil)
   end

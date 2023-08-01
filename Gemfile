@@ -81,3 +81,9 @@ gem "money"
 
 
 
+
+gem "recaptcha", "~> 5.14"
+
+gem "country_select", "~> 8.0"
+
+gem "countries", "~> 5.5"

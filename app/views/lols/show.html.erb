@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @lol %>
+
+<div>
+  <%= link_to "Edit this lol", edit_lol_path(@lol) %> |
+  <%= link_to "Back to lols", lols_path %>
+
+  <%= button_to "Destroy this lol", @lol, method: :delete %>
+</div>

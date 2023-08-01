@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
   # Defines the root path route ("/")
   # root "articles#index"
 
@@ -10,6 +8,18 @@ Rails.application.routes.draw do
 
   resources :carts, except: [:new]
 
-  # get '/peppermint.js', to: 'home#peppermint_spray', format: 'js'
+  resources :carts do
+    collection do
+      get "/guest/:token", to: "carts#guest_order", as: 'guest_order'
+    end
+  end
+
+  resources :checkouts do
+    collection {
+      post :review
+
+      post "/guest/buy", to: "checkouts#guest_buy"
+    }
+  end
 
 end

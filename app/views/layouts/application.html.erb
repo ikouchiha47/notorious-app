@@ -12,9 +12,11 @@
   <body>
       <%= render partial: "layouts/header" %>
       <%= render partial: "layouts/breadcrumb" %>
+      <% flash.each do |type, msg| %>
+          <%= render partial: 'layouts/flash', locals: { flash_type: type, flash_msg: msg } %>
+      <% end %>
       <%= yield %>
   </body>
 
   <%= javascript_importmap_tags %>
-  <%= javascript_include_tag 'tracking', :"data-turbo-track" => "reload" %>
 </html>

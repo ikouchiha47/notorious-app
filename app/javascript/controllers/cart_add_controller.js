@@ -1,17 +1,27 @@
 import { Controller } from "@hotwired/stimulus"
 
+import * as db from "helpers/storage";
+
 // Connects to data-controller="cart-add"
 export default class extends Controller {
     static targets = [
         "selectSize",
         "productItem",
         "addToCartIcon",
-        "sizeError"
+        "buyNowSize",
+        "buyNowItemID",
     ];
 
     connect() {
         console.log(this.selectSizeTarget);
         console.log(this.productItemTarget);
+
+        let itemID = this.productItemTarget.dataset.itemId;
+        let isLoggedIn = this.productItemTarget.dataset.isLoggedIn;
+
+        if(itemID && db.checkItemPresent(itemID) && isLoggedIn == 'true') {
+            this.addToCartIconTarget.disabled = true;
+        }
     }
 
     addToCart(e) {
@@ -21,8 +31,7 @@ export default class extends Controller {
         let itemID = this.productItemTarget.dataset.itemId;
 
         if(!size) {
-            this.showError("Please select size");
-            console.error("invalid size");
+            this.attentionSizeError();
             return;
         }
 
@@ -30,64 +39,82 @@ export default class extends Controller {
             console.error("something went wrong");
             return;
         }
-        let pepper = sessionStorage && sessionStorage.getItem("pepper");
-        if(!pepper) {
-            let el = document.querySelector("#pf");
-            if(el && el.dataset) {
-                pepper = el.dataset.pepper;
-            }
+
+        let result = db.addCartItem( { size, itemID });
+        if(!result) {
+            console.error("someshit went down");
+            return;
         }
 
-        let cartItem = { size, itemID };
+        this.buyNowSizeTarget.value = `${size}`;
 
-        try {
-            let data = localStorage.getItem(pepper) || '[]';
-            let itemsInCart = JSON.parse(data);
+        this.dispatch(
+            'updated',
+            { detail: { totalItems: result } }
+        );
 
-            data = JSON.stringify(itemsInCart.concat(cartItem));
 
-            localStorage.setItem(pepper, data);
+        // try {
+        //     let data = localStorage.getItem(pepper) || '[]';
+        //     let itemsInCart = JSON.parse(data);
 
-            if(!this.addToCartIconTarget.classList.contains('fill_animation')){
-                this.addToCartIconTarget.classList.add('fill_animation');
-            } 
-            // we will change this such that instead of
-            // cart-add, we can have generic handler.
-            // or like each kind will have type of event
-            // defined types. one for notification
-            // TODO: handle notifications
-            this.dispatch(
-                'updated',
-                { detail: { totalItems: itemsInCart.length + 1 } }
-            );
+        //     data = JSON.stringify(itemsInCart.concat(cartItem));
 
-            // dispatch event
-        } catch(e) {
-            console.error(e);
-        }
+        //     localStorage.setItem(pepper, data);
+
+        //     if(!this.addToCartIconTarget.classList.contains('fill_animation')){
+        //         this.addToCartIconTarget.classList.add('fill_animation');
+        //     } 
+        //     // we will change this such that instead of
+        //     // cart-add, we can have generic handler.
+        //     // or like each kind will have type of event
+        //     // defined types. one for notification
+        //     // TODO: handle notifications
+        //     this.dispatch(
+        //         'updated',
+        //         { detail: { totalItems: itemsInCart.length + 1 } }
+        //     );
+
+        //     // dispatch event
+        // } catch(e) {
+        //     console.error(e);
+        // }
     }
 
-    showError(message) {
-        const errTgt = this.sizeErrorTarget;
+    updateItem(e) {
+        let itemID = this.productItemTarget.dataset.itemId;
+        let size = this.selectSizeTarget.value;
 
-        errTgt.value = message;
+        console.log(size);
+    }
 
-        let classList = Array.from(errTgt.classList).reduce((acc, className) => {
-            acc[className] = className;
-            return acc;
-        }, {});
+    directBuy(e) {
 
-        if (classList['vanish'] && !classList['appear']) {
-            errTgt.innerHTML = message;
-            classList = { ...classList, vanish: null, appear: 'appear'};
+        let itemID = this.buyNowItemIDTarget.value;
+        let size = this.selectSizeTarget.value;
 
-            errTgt.className = Object.keys(classList).join(' ');
+        console.log(itemID, size);
+        if(itemID && size) {
+            this.buyNowSizeTarget.value = size;
+        } else {
+            e.preventDefault();
+            this.attentionSizeError();
         }
 
-        setTimeout(function() {
-            errTgt.classList.remove('appear');
-            errTgt.innerHTML = '';
-        }, 1200);
     }
+
+    attentionSizeError() {
+        const dropDown = this.selectSizeTarget;
+
+        if(dropDown.classList.contains('attention')) {
+            return;
+        }
+
+        dropDown.classList.add('attention');
+        setTimeout(() => {
+            dropDown.classList.remove('attention');
+        },  1000);
+    }
+
 }
 

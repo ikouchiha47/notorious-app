@@ -28,24 +28,24 @@ function toggleMenu() {
     };
 }
 
-function pepperSpray() {
-    if(FingerprintJS) {
-        FingerprintJS
-            .load()
-            .then(fp => fp.get())
-            .then(result => {
-                let el = document.querySelector("#pf");
-                if (el && el.dataset) {
-                    el.dataset.pepper = result.visitorId;    
-                }
-                sessionStorage.setItem("cart_id", result.visitorId);
+// function pepperSpray() {
+//     if(FingerprintJS) {
+//         FingerprintJS
+//             .load()
+//             .then(fp => fp.get())
+//             .then(result => {
+//                 let el = document.querySelector("#pf");
+//                 if (el && el.dataset) {
+//                     el.dataset.pepper = result.visitorId;    
+//                 }
+//                 sessionStorage.setItem("cart_id", result.visitorId);
 
-                document.removeEventListener(loadedEvent, pepperSpray);
-            });
-    } else {
-        console.error("fuck me dead!!");
-    }
-}
+//                 document.removeEventListener(loadedEvent, pepperSpray);
+//             });
+//     } else {
+//         console.error("fuck me dead!!");
+//     }
+// }
+// document.addEventListener(loadedEvent, pepperSpray);
 
-document.addEventListener(loadedEvent, pepperSpray);
 document.addEventListener(loadedEvent, toggleMenu);

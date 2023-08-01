@@ -4,16 +4,12 @@ class ProductDetail
 
   attr_reader :product
 
-  def initialize(product_id)
+  def initialize(product_id, product = nil)
     @product_id = product_id
+    @product = product.nil? ? build_product : product
   end
 
   def get
-    @product = Product
-      .includes(:product_item, :category)
-      .where(products: { id: @product_id })
-      .first
-
     return if @product.nil?
 
     details = @product.product_item.details
@@ -56,6 +52,13 @@ class ProductDetail
   end
 
   private
+
+  def build_product
+    Product
+    .includes(:product_item, :category)
+    .where(products: { id: @product_id })
+    .first
+  end
 
   def get_measurement(measured_unit)
     measured_unit.present? ? measured_unit : DEFAULT_MEASUREMENT_UNIT

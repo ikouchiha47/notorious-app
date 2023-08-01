@@ -2,6 +2,19 @@ class User < ApplicationRecord
   include Uidable
   include BCrypt
 
+  GUEST_USER = 'guest'
+
+  validates :email, :user_type, :country_code, :number, presence: true
+  validates :country_code, numericality: {
+    only_integer: true,
+    greater_than_or_equal_to: 1,
+    less_than_or_equal_to: 999
+  }
+  validates :number, length: { in: 6..20 }
+
+
+  has_many :addresses
+
   def password
     @password ||= Password.new(hashed_password)
   end
@@ -19,5 +32,9 @@ class User < ApplicationRecord
       verified: false,
       email: 'vindy.ssa@mailinator.com'
     )
+  end
+
+  def is_guest?
+    user.type == "guest" and user.verified
   end
 end
