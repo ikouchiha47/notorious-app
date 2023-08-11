@@ -9,7 +9,7 @@ module Middleware
       path_info = request.path_info
 
       # Remove '/shop/' prefix if present
-      request.path_info = path_info.sub('/shop', '/') if path_info.start_with?('/shop')
+      request.path_info = path_info.sub('/store', '/') if path_info.start_with?('/store')
 
       @app.call(env)
     end
