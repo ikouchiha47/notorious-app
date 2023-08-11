@@ -1,0 +1,122 @@
+/* hero section start */
+
+.hero {
+  height: 70vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero img {
+  width: 100%;
+  object-fit: cover;
+  height: 100%;
+}
+
+.hero article {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    color: var(--white);
+    padding: 10px 2rem;
+
+    width: 100%;
+    height: calc(100% - 10px);
+    display: grid;
+    grid-template-rows: 2fr 1fr 1fr;
+
+}
+
+.hero .slogan {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.hero .quote {
+    font-size: 1rem;
+    align-self: center;
+}
+
+.hero .explore-all-cta-button {
+  text-decoration: none;
+  background-color: var(--violet);
+  padding: 10px;
+  width: 130px;
+  font-weight: bold;
+  box-shadow: 4px 4px 0 #fff;
+  color: white;
+  display: inline-block;
+}
+
+@media (min-width: 35em) {
+    .hero {
+        height: 600px;
+    }
+}
+
+/* hero section end */
+
+
+/* new drops start */
+
+.product-listing {
+    margin-top: 4em;
+    margin-bottom: 8em;
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1rem;
+}
+
+@media (min-width: 35em) {
+  .product-listing {
+    padding-inline: 2rem;
+  }
+}
+
+.product-listing header  {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    border: 1px solid black;
+    border-inline: 0;
+    padding-block: 10px;
+    /* padding-left: 10px; */
+}
+
+.product-listing h3 {
+  font-size: 1.5rem;
+}
+
+.explore-link, .explore-link:visited {
+    color: var(--violet);
+}
+
+.explore-link {
+    transition: transform 350ms forward;
+}
+
+.explore-link:hover {
+    transform: skewX(-20deg);
+}
+
+.explore-link:after {
+    content: "->"
+}
+/* new drops end */
+
+
+/* about us start */
+.footer {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    background-color: var(--black);
+    color: var(--white);
+    padding: 3em 1em;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+/* about us end */

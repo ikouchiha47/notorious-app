@@ -102,7 +102,7 @@ def build_items
 end
 
 def create_guest_user
-  User.first_or_create!(password: 'ikea', country_code: 0, number: 0, verified: false, email: 'vindy.ssa@mailinator.com')
+  User.first_or_create!(password: 'ikea', country_code: 0, number: 1234560, verified: false, email: 'vindy.ssa@mailinator.com')
 end
 
 

@@ -1,0 +1,22 @@
+.explore-all-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+#categories {
+  margin-top: 9em;
+  display: flex;
+  border: 1px solid black;
+  border-inline: 0;
+  align-items: center;
+  padding: 1em 1em;
+  background-color: var(--violet);
+}
+
+.category_item {
+}
+
+.category_item a {
+  font-weight: 700;
+  color: var(--black);
+}

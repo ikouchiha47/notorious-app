@@ -7,7 +7,7 @@ class User < ApplicationRecord
   validates :email, :user_type, :country_code, :number, presence: true
   validates :country_code, numericality: {
     only_integer: true,
-    greater_than_or_equal_to: 1,
+    greater_than_or_equal_to: 0,
     less_than_or_equal_to: 999
   }
   validates :number, length: { in: 6..20 }

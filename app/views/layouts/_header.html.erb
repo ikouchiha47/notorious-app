@@ -1,43 +1,32 @@
-<div id="header">
-    <div id="pf"></div>
-    <div id="header-logo">
-        <%= link_to 'tee-tees', root_path, { class: "clean_anchor" } %>
-    </div>
-    <div id="header-icons">
-        <ul
-            id="header-actions"
-            data-action="cart-add:updated@window->cart-count#update"
-            data-controller="cart-count">
-            <li>login</li>
-            <li data-cart-count-target="itemCount">cart</li>
-        </ul>
-    </div>
+<header class="nav-header">
+  <div id="app-logo">
+    <%= link_to 'notorious', root_path, { class: "clean_anchor" } %>
+  </div>
 
-    <div id="menu-icon">
-        <span class="line"></span>
-        <span class="line"></span>
-        <span class="line"></span>
-    </div>
-</div>
+  <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false">
+    <span class="material-symbols-outlined nav-toggle-icon show" id="menu">menu</span>
+    <span class="material-symbols-outlined nav-toggle-icon" id="close">close</span>
+    <span class="sr-only">Menu</span>
+  </button>
 
-<nav class="menu" id="header-nav-menu">
-    <div id="header-nav-menu-wrapper">
-        <div id="profile-image">
-            <img src="https://placehold.co/400x400" alt="Guest Profile" class="profile-image">
-            <p class="profile-username">Guest</p>
-            <!-- Add your guest profile image here -->
-        </div>
-        <!-- <div id="header-close-icon">&times;</div> -->
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-
-        <div id="header-close-icon">
-            <span class="line line_top"></span>
-            <span class="line line_bottom"></span>
-        </div>
-    </div>
-</nav>
+  <nav class="nav-options">
+    <ul 
+       id="primary-nav" 
+       data-action="cart-add:updated@window->cart-count#update"
+       data-controller="cart-count"
+       data-state="close">
+      <li>
+        <span aria-hidden="true" class="material-symbols-outlined">
+          shopping_cart
+        </span>
+        <span data-cart-count-target="itemCount">Cart</span>
+      </li>
+      <li>
+        <span aria-hidden="true" class="material-symbols-outlined">
+          account_circle
+        </span>
+        <span>Login</span>
+      </li>
+    </ul>
+  </nav>
+</header>

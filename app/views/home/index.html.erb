@@ -1,16 +1,79 @@
-<div class="category_wrapper">
-    <div id="categories">
-        <%= link_to "Shop", products_path, { class: "category_item" } %>
-        <a href="#" class="category_item">About</a>
-        <a href="#" class="category_item">Contact</a>
-    </div>
+<section class="hero">
+  <img src='<%= image_url("tobias_hero.jpg") %>' alt="hero"/>
+  <article>
+    <span class="slogan">Elevate your FQ</span>
+    <p class="quote">
+    Street Attitude, Unleash Your Latitude
+    <br/>
+    effortless attitude meets minimalist latitude, a canvas for your unique urban expression.
+    </p>
+    <p class="align-self-end">
+      <%= link_to "explore all", products_path, { class: 'explore-all-cta-button' } %>
+    </p>
+  </article>
+</section>
 
-    <div id="featured-gallery">
-        <% @featured.each do |product| %>
-            <div class="featured_image">
-                <%= image_tag product.promoted_image %>
-            </div>
-        <% end %>
-    </div>
-</div>
+<section class="product-listing">
+  <header>
+    <h3>new drops</h3>
+    <%= link_to "all", products_path, { class: 'explore-link' } %>
+  </header>
+  <div class="items-wrapper">
+    <ul class="product-items-listing md-auto-fit">
+      <li>
+        <img src='<%= image_url("mockups/chemical_x_black_flat.png") %>'/>
+        <span>chemical x</span>
+      </li>
+      <li>
+        <img src='<%= image_url("mockups/chemical_x_black_man.png") %>'/>
+        <span>chemical x</span>
+      </li>
 
+      <li>
+        <img src='<%= image_url("mockups/chemical_x_black_flat.png") %>'/>
+        <span>pizza senses</span>
+      </li>
+      <li>
+        <img src='<%= image_url("mockups/chemical_x_white_man.png") %>'/>
+        <span>pizza senses are tingling</span>
+      </li>
+
+      <li>
+        <img src='<%= image_url("mockups/chemical_x_black_flat.png") %>'/>
+        <span>chemical x</span>
+      </li>
+
+      <li>
+        <img src='<%= image_url("mockups/chemical_x_white_flat.png") %>'/>
+        <span>chemical x</span>
+      </li>
+
+      <li>
+        <img src='<%= image_url("mockups/chemical_x_black_man.png") %>'/>
+        <span>chemical x</span>
+      </li>
+
+      <li>
+        <img src='<%= image_url("mockups/chemical_x_white_man.png") %>'/>
+        <span>brains in the family</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="product-listing" id="plain-tees">
+  <header>
+    <h3>plain tees</h3>
+    <a href="#" class="explore-link">all</a>
+  </header>
+  <div class="items-wrapper">
+    <ul class="product-items-listing md-auto-fill">
+      <li>
+        <img src='<%= image_url("mockups/black_flat.png") %>'/>
+      </li>
+      <li>
+        <img src='<%= image_url("mockups/white_flat.png") %>'/>
+      </li>
+    </ul>
+  </div>
+</section>

@@ -1,15 +1,24 @@
 <p style="color: green"><%= notice %></p>
 
-<div class="category_wrapper">
-    <div id="categories">
-        <% @categories.each do |category| %>
-            <%= render category %>
-        <% end %>
-    </div>
+<div class="explore-all-wrapper">
+  <div id="categories">
+    <% @categories.each do |category| %>
+      <%= render category %>
+    <% end %>
+  </div>
 
-    <div id="product-listing">
+  <section class="product-listing">
+    <header>
+      <h3>all</h3>
+    </header>
+
+    <div class="items-wrapper">
+      <ul class="product-items-listing md-auto-fit">
         <% @products.each do |product| %>
-            <%= render product  %>
+          <%= render product  %>
         <% end  %>
+      </ul>
     </div>
+  </section>
+
 </div>
