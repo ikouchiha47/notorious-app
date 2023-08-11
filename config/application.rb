@@ -1,19 +1,20 @@
-require_relative "boot"
+require_relative 'boot'
 
-require "rails"
+require 'rails'
 # Pick the frameworks you want:
-require "active_model/railtie"
-require "active_job/railtie"
-require "active_record/railtie"
-require "active_storage/engine"
-require "action_controller/railtie"
-require "action_mailer/railtie"
+require 'active_model/railtie'
+require 'active_job/railtie'
+require 'active_record/railtie'
+require 'active_storage/engine'
+require 'action_controller/railtie'
+require 'action_mailer/railtie'
 # require "action_mailbox/engine"
-require "action_text/engine"
-require "action_view/railtie"
-require "action_cable/engine"
-require "rails/test_unit/railtie"
+require 'action_text/engine'
+require 'action_view/railtie'
+require 'action_cable/engine'
+require 'rails/test_unit/railtie'
 
+require_relative '../lib/middleware/path_handler'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -30,7 +31,8 @@ module Thisfuckingapp
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
-    config.hosts << "mr-notorious.shop"
+    config.eager_load_paths << Rails.root.join('lib/middleware')
+    config.hosts << 'mr-notorious.shop'
+    config.middleware.use ::Middleware::PathHandler
   end
 end

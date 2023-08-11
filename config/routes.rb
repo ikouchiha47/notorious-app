@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   root to: 'home#index'
+
   resources :categories, only: %i[index]
   resources :products, only: %i[show index]
 
@@ -10,16 +11,15 @@ Rails.application.routes.draw do
 
   resources :carts do
     collection do
-      get "/guest/:token", to: "carts#guest_order", as: 'guest_order'
+      get '/guest/:token', to: 'carts#guest_order', as: 'guest_order'
     end
   end
 
   resources :checkouts do
-    collection {
+    collection do
       post :review
 
-      post "/guest/buy", to: "checkouts#guest_buy"
-    }
+      post '/guest/buy', to: 'checkouts#guest_buy'
+    end
   end
-
 end
