@@ -11,13 +11,13 @@ export default class extends Controller {
         let totalItems = db.countItems();
 
         if(totalItems > 0) {
-            this.itemCountTarget.innerText = `Cart ${totalItems}`;
+            this.itemCountTarget.innerText = `${totalItems} Cart `;
         }
 
 
     }
 
     update({ detail: { totalItems } }) {
-        this.itemCountTarget.innerText = `Cart ${totalItems}`;
+        this.itemCountTarget.innerText = `${totalItems} Cart`;
     }
 }

@@ -103,6 +103,10 @@
   }
 }
 
+#guest-checkout-form {
+  width: 100%;
+}
+
 #new_guest_order_builder_form {
   display: flex;
   flex-direction: column;
@@ -146,13 +150,11 @@
 
 #guest_order_builder_form_phone_country_code {
   width: 45px;
+  justify-self: end;
+  height: 1.6em;
 }
 #guest_order_builder_form_phone_number {
   width: 100%;
-}
-
-#guest_order_builder_form_phone_country_code {
-  justify-self: end;
 }
 
 .guest_checkout_info_section h3 {
@@ -180,4 +182,8 @@
   font-size: 1.3em;
   box-shadow: 1px 1px 2px #5d4646;
   text-transform: uppercase;
+}
+
+.new_guest_order_builder_form .error {
+  font-size: 0.75em;
 }

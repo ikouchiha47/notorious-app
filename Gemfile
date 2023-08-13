@@ -87,3 +87,5 @@ gem "recaptcha", "~> 5.14"
 gem "country_select", "~> 8.0"
 
 gem "countries", "~> 5.5"
+
+gem "aasm", "~> 5.5"

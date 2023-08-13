@@ -2,13 +2,16 @@
     position: fixed;
     top: 50px;
     right: 50%;
+    transform: translateX(50%);
     background-color: #fff;
-    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
     width: 300px;
     height: auto;
     z-index: 9999;
     border-radius: 12px;
     overflow: hidden;
+    border-block: 1px solid rgba(0, 0, 0, 0.7);
+    border-bottom: none;
 }
 
 @keyframes toast-closing {
@@ -26,8 +29,6 @@
 .toast.toast_close {
     animation: 1s linear forwards toast-closing;
 }
-
-
 
 .toaster_contents {
     padding: 15px;

@@ -10,6 +10,7 @@ export default class extends Controller {
         "addToCartIcon",
         "buyNowSize",
         "buyNowItemID",
+        "formActionSizeError"
     ];
 
     connect() {
@@ -83,17 +84,24 @@ export default class extends Controller {
 
     updateItem(e) {
         let itemID = this.productItemTarget.dataset.itemId;
-        let size = this.selectSizeTarget.value;
+        let size = this.buyNowSizeTarget.value;
 
         console.log(size);
     }
 
-    directBuy(e) {
+    setSize(e) {
+        let size = e.target.value;
+        this.buyNowSizeTarget.value = size;
 
+        this.clearError();
+    }
+
+    directBuy(e) {
         let itemID = this.buyNowItemIDTarget.value;
-        let size = this.selectSizeTarget.value;
+        let size = this.buyNowSizeTarget.value;
 
         console.log(itemID, size);
+
         if(itemID && size) {
             this.buyNowSizeTarget.value = size;
         } else {
@@ -104,16 +112,12 @@ export default class extends Controller {
     }
 
     attentionSizeError() {
-        const dropDown = this.selectSizeTarget;
+        const msg = this.selectSizeTarget.dataset.errorMsg;
+        this.formActionSizeErrorTarget.innerText = msg;
+    }
 
-        if(dropDown.classList.contains('attention')) {
-            return;
-        }
-
-        dropDown.classList.add('attention');
-        setTimeout(() => {
-            dropDown.classList.remove('attention');
-        },  1000);
+    clearError() {
+        this.formActionSizeErrorTarget.innerText = "";
     }
 
 }

@@ -1,11 +1,9 @@
 <header id="guest-shopping-info-header" class="page-title line-top">
-    <h3 class="pi-content-gutter" style="--pi-block-gap: 0">Billing Details</h3>
+    <h3 class="pi-content-gutter" style="--pi-block-gap: 0">Review order</h3>
 </header>
 
 <div class="checkout_wrapper">
     <div class="shopping_info">
-        
-
         <section id="guest-shopping-list">
             <div class="cart-item">
                 <div class="cart-image-wrapper">
@@ -35,57 +33,6 @@
         </section>
     </div>
 
-    <div class="checkout">
-        <%= simple_form_for @form, url: checkouts_url, method: :post, defaults: { wrapper_html: { class: 'guest_info_form_wrapper'}} do |f| %>
-            <section id="user_info" class="guest_checkout_info_section">
-                <h3>Contact Info</h3>
-                <%= f.input :email, required: true %>
-            </section>
+    <%= render partial: "carts/form", locals: { form: @form, total_amount: @total_amount, shipping: @shipping, outofstock: @outofstock, show_payment: @show_payment, order_token: nil } %>
 
-            <section id="shipping_info" class="guest_checkout_info_section">
-                <h3>Shipping Details</h3>
-                <%= f.input :address_line_a, as: :text, required: true %>
-                <%= f.input :address_line_b, as: :text %>
-                <%= f.input :zip_code, required: true %>
-                <div class="phone_number_wrapper guest_info_form_wrapper">
-                    <label class="phone required"> 
-                        <abbr title="required">*</abbr>
-                        Phone
-                    </label>
-                    <%= f.select :phone_country_code, country_code_list, required: true %>
-                    <%= f.input :phone_number, as: :integer, required: true, label: false, wrapper_html: { id: 'guest-phone-number', class: 'input integer required guest_order_builder_form_phone_number' } %>
-                </div>
-            </section>
-
-            <%= f.simple_fields_for @form.item, defaults: {wrapper_html: {class: ''}} do |ff| %>
-                <%= ff.input :item_id, as: :hidden %>
-                <%= ff.input :size, as: :hidden %>
-                <%= ff.input :quantity, as: :hidden %>
-            <% end %>
-
-            <section class="guest_checkout_info_section" id="payment_info">
-                <h3>Billing Details</h3>
-                <div class="flex flex-row space-between">
-                    <span class="inline-block">Total:</span>
-                    <span class="inline-block">
-                        <%= format_price @total_amount %>
-                    </span>
-                </div>
-                <div class="flex flex-row space-between">
-                    <span class="inline-block">Shipping: </span>
-                    <span class="inline-block">0</span>
-                </div>
-                <div class="flex flex-row space-between checkout-total">
-                    <span class="inline-block bold">Total </span>
-                    <span class="inline-block bold">
-                        <%= format_price(@total_amount + @shipping) %>
-                    </span>
-                </div>
-            </section>
-
-            <section id="pay-me-now">
-                <%= f.button :submit, "Place Order", { class: 'place_order_btn_lg' } %>
-            </section>
-        <% end %>
-    </div>
 </div>

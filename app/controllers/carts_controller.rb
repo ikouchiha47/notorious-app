@@ -16,8 +16,6 @@ class CartsController < ApplicationController
     raise ::Unauthorized unless cart_token == params[:token]
 
     guest_cart_items = HashWithIndifferentAccess.new session[cart_token]
-    p 'sadsadasdas'
-    p guest_cart_items
 
     raise ActiveRecord::RecordNotFound unless guest_cart_items.present?
 
@@ -28,7 +26,10 @@ class CartsController < ApplicationController
 
     @shipping = 0
     @discount = 0
+    @outofstock = @product_item.quantity <= 0
     @total_amount = @product.price.to_i * guest_cart_items[:quantity].to_i
+
+    @show_payment = false
 
     add_breadcrumb('Products', products_url)
     add_breadcrumb(@product.title, product_url(@product))

@@ -17,7 +17,7 @@
   border-block: 2px solid black;
   align-items: center;
   padding: 1em var(--content-gutter);
-  background-color: var(--secondary_1);
+  background-color: var(--secondary_2);
 }
 
 .category_item a {

@@ -1,6 +1,6 @@
 <header class="page-title product-title line-top">
-            <h2><%= @product.title %></h2>
-        </header>
+    <h2><%= @product.title %></h2>
+</header>
 <div
         id="product_details_wrapper"
         data-controller="cart-add"
@@ -9,40 +9,51 @@
         data-is-logged-in="<%= logged_in? ? 'true' : 'false' %>"
         data-item-id="<%= @product_details[:item_id] %>"
         >
-        
 
         <div class="flex flex-col full-width">
             <div class="product_details__image_wrapper">
                 <!-- need to show all image in c arousal -->
                 <%= image_tag @product.promoted_image %>
             </div>
-            
+
         </div>
 
         <div class="flex flex-col full-width">
             <div class="product_details__info">
                 <section id="description">
-                <% if @product.description.present? %>
-                    <em><%= @product.description %></em>
-                <% else %>
-                    <em>
-                        Get your X factor out. Professor mixed up in the lab, so did we.
-                    </em>
-                <% end %>
-            </section>
+                    <% if @product.description.present? %>
+                        <em><%= @product.description %></em>
+                    <% else %>
+                        <em>
+                            Get your X factor out. Professor mixed up in the lab, so did we.
+                        </em>
+                    <% end %>
+                </section>
                 <section class="size-select">
                     <header class="flex flex-row align-end" style="--gap: 2em;">
                         <h3 class="product-option-header">select size</h3>
                         <a class="product-option-helper" href="#">size guide</a>
-                    </header> 
+                    </header>
                     <ul class="sizes">
                         <% size_options_for_select(@product_details.size_chart).each do |size| %>
                             <li>
-                                <%= radio_button_tag :size_id, size[1], false, {class: 'product-size-option', data: {cart_add_target: 'selectSize'}} %>
+                                <%= radio_button_tag :size_id, 
+                                    size[1],
+                                    false, 
+                                    {
+                                        class: 'product-size-option',
+                                        data: {
+                                            cart_add_target: 'selectSize',
+                                            error_msg: 'please select a size',
+                                            action: 'click->cart-add#setSize'}
+                                    }
+                                %>
                                 <%= label_tag "size_id_#{size[1]}", size[0] %>
                             </li>
                         <% end %>
                     </ul>
+                    <div data-cart-add-target="formActionSizeError" class="form-inline-error">
+                    </div>
                 </section>
             </div>
 
@@ -71,11 +82,11 @@
                                 value: @product_details[:item_id] }
                             %>
                         <%= f.input :size,
-                        as: :hidden,
-                        input_html: {
-                            data: {'cart-add-target': 'buyNowSize'} }
-                        %>
-                    <%= f.input :quantity,
+                            as: :hidden,
+                            input_html: {
+                                data: {'cart-add-target': 'buyNowSize'} }
+                            %>
+                        <%= f.input :quantity,
                         as: :hidden,
                         input_html: {
                             data: {'cart-add-target': 'buyNowQuantity'},

@@ -9,23 +9,28 @@ import { $, $hide, $show, $toggle, $toggleClass } from "./el";
 
 const loadedEvent = 'DOMContentLoaded';
 
-function toggleMenu() {
-    const $menuIcon = $("#menu-icon");
-    const $menu = $("#header-nav-menu");
-    const $closeIcon = $("#header-close-icon");
 
-    // Hide the menu initially
-    $hide($menu);
+function toggleNavigation(e) {
+    e.preventDefault();
 
-    // Toggle the menu on click of the menu icon
-    $menuIcon.onclick = function() {
-        $toggle($menu);
-    };
+    console.log("clicked");
+    let primaryNav = $("#primary-nav");
+    let toggleEl = $(".nav-toggle");
+    let isExpanded = toggleEl.getAttribute('aria-expanded');
 
-    // Hide the menu on click of the close icon
-    $closeIcon.onclick = function() {
-        $hide($menu);
-    };
+    let menuEl = $("#menu", toggleEl);
+    let closeEl = $("#close", toggleEl);
+
+    menuEl.classList.toggle("show");
+    closeEl.classList.toggle("show");
+
+    if(isExpanded === "false") {
+        primaryNav.dataset.state = "open";
+        toggleEl.setAttribute("aria-expanded", "true");
+    } else {
+        primaryNav.dataset.state = "close";
+        toggleEl.setAttribute("aria-expanded", "false");
+    }
 }
 
 // function pepperSpray() {
@@ -48,4 +53,8 @@ function toggleMenu() {
 // }
 // document.addEventListener(loadedEvent, pepperSpray);
 
-document.addEventListener(loadedEvent, toggleMenu);
+document.addEventListener(loadedEvent, () => {
+    let toggleEl = $(".nav-toggle");
+
+    toggleEl.addEventListener('click', toggleNavigation);
+});

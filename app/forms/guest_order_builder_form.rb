@@ -12,6 +12,8 @@ class GuestOrderBuilderForm
                 :phone_number,
                 :alternate_phone_number
 
+  attr_reader :order
+
   validates :email,
             :phone_country_code,
             :phone_number,
@@ -21,8 +23,8 @@ class GuestOrderBuilderForm
 
   validates :zip_code, numericality: {
     only_integer: true,
-    greater_than_or_equal_to: 10000,
-    less_than_or_equal_to: 9999999999
+    greater_than_or_equal_to: 10_000,
+    less_than_or_equal_to: 9_999_999_999
   }
 
   validates :phone_country_code, numericality: {
@@ -33,9 +35,9 @@ class GuestOrderBuilderForm
 
   validates :phone_number, length: { in: 6..20 }
 
-
   def int?(string)
     return true if string.is_a? Numeric
+
     string.scan(/\D/).empty?
   end
 
@@ -67,7 +69,6 @@ class GuestOrderBuilderForm
     # we also need to validate and save the address
     # we need to create an order with a random cart_id prefixed with guest_{cart_id}
 
-
     @success = false
     return unless valid?
 
@@ -76,20 +77,20 @@ class GuestOrderBuilderForm
       order_item = ProductItem.find(@item.item_id)
 
       user = User.create!(
-        email: email,
-        password: password,
+        email:,
+        password:,
         country_code: phone_country_code,
         number: phone_number,
-        user_type:'guest',
-        verified:false,
+        user_type: 'guest',
+        verified: false
       )
 
       address = Address.create!(
         user_id: user.id,
-        address_line_a: address_line_a,
-        address_line_b: address_line_b,
-        zip_code: zip_code,
-        alternate_number: alternate_number,
+        address_line_a:,
+        address_line_b:,
+        zip_code:,
+        alternate_number:
       )
 
       cart_id = "guest_#{ULID.generate}"
@@ -98,17 +99,17 @@ class GuestOrderBuilderForm
       p @item.quantity
       p order_item.product.price
 
-      Order.create!({
-        cart_id: cart_id,
-        user_id: user.id,
-        address_id: address.id,
-        amount: amount,
-        payment_status: "pending",
-        order_status: "pending",
-        alternate_number: alternate_number,
-        order_token: SecureRandom.hex(16),
-        order_token_expires_at: 2.days.since.utc,
-      })
+      @order = Order.create!({
+                               cart_id:,
+                               user_id: user.id,
+                               address_id: address.id,
+                               amount:,
+                               payment_status: 'pending',
+                               order_status: 'pending',
+                               alternate_number:,
+                               order_token: SecureRandom.hex(16),
+                               order_token_expires_at: 2.days.since.utc
+                             })
 
       @success = true
     end
