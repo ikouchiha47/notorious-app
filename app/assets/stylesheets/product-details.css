@@ -13,8 +13,7 @@
 }
 
 .product-title {
-  padding-block: 2em;
-  text-align: center;
+  --align: center;
 }
 
 .product-title h2 {

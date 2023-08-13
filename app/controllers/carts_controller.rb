@@ -8,8 +8,7 @@ class CartsController < ApplicationController
   # get cart_token if cart_state: "processing"
   # For unregistered users return :unauthorized
 
-  def edit
-  end
+  def edit; end
 
   def guest_order
     cart_token = session[:cart_token]
@@ -17,28 +16,28 @@ class CartsController < ApplicationController
     raise ::Unauthorized unless cart_token == params[:token]
 
     guest_cart_items = HashWithIndifferentAccess.new session[cart_token]
-    p "sadsadasdas"
+    p 'sadsadasdas'
     p guest_cart_items
 
     raise ActiveRecord::RecordNotFound unless guest_cart_items.present?
 
     @product_item = ProductItem.includes(:product).find_by!(id: guest_cart_items[:item_id])
-    product = @product_item.product
+    @product = @product_item.product
     @form = GuestOrderBuilderForm.new
     @form.order_item_builder = guest_cart_items.slice(:item_id, :size, :quantity)
 
-
     @shipping = 0
     @discount = 0
-    @total_amount = @product_item.product.price.to_i * guest_cart_items[:quantity].to_i
+    @total_amount = @product.price.to_i * guest_cart_items[:quantity].to_i
 
-    add_breadcrumb("Products", products_url)
-    add_breadcrumb(product.title, product_url(product))
-    add_breadcrumb("Checkout", nil)
+    add_breadcrumb('Products', products_url)
+    add_breadcrumb(@product.title, product_url(@product))
+    add_breadcrumb('Checkout', nil, true)
   end
 
   def show
     raise ActiveRecord::RecordNotFound unless cart_items.present?
+
     @cart_items = Cart
                   .includes(:product_item)
                   .joins(:product_item)
@@ -51,8 +50,7 @@ class CartsController < ApplicationController
     @form = GuestOrderBuilderForm.new
   end
 
-  def update
-  end
+  def update; end
 
   def destroy
     @cart.destroy
@@ -66,6 +64,7 @@ class CartsController < ApplicationController
 
   def cart_token
     raise ::Unauthorized unless session[:cart_token].present?
+
     session[:cart_token]
   end
 
@@ -76,7 +75,7 @@ class CartsController < ApplicationController
       cart_token:,
       cart_state: 'processing',
       user_id: current_user.user_id
-    ).where("cart.product_item_id = product_items.id")
+    ).where('cart.product_item_id = product_items.id')
   end
 
   def cart_params

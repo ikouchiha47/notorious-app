@@ -7,11 +7,10 @@ class ApplicationController < ActionController::Base
 
   helper_method :breadcrumbs
 
-  def index
-  end
+  def index; end
 
-  def add_breadcrumb(title, url)
-    @breadcrumbs[title] = { title:, url: }
+  def add_breadcrumb(title, url, skip = false)
+    @breadcrumbs[title] = { title:, url:, skip: }
   end
 
   def breadcrumbs
@@ -24,12 +23,10 @@ class ApplicationController < ActionController::Base
     @breadcrumbs = ActiveSupport::OrderedHash.new
   end
 
-
   def not_found
     # raise ActionController::RoutingError.new('Not Found')
     flash[:error] = 'something went wrong'
     redirect_back(fallback_location: root_path)
-
   end
 
   def current_user

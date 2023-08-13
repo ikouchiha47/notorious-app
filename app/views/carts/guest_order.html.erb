@@ -1,14 +1,27 @@
+<header id="guest-shopping-info-header" class="page-title line-top">
+    <h3 class="pi-content-gutter" style="--pi-block-gap: 0">Billing Details</h3>
+</header>
+
 <div class="checkout_wrapper">
     <div class="shopping_info">
-        <header id="guest-shopping-info-header">
-            <span class="inline_block">Billing Details</span>
-        </header>
+        
 
         <section id="guest-shopping-list">
-            <%= image_tag @product_item.product.promoted_image %>
-            <div id="guest-pricing-info">
-                <span class="inline_block"><%= format_price @product_item.product.price %></span>
+            <div class="cart-item">
+                <div class="cart-image-wrapper">
+                    <%= image_tag @product_item.product.promoted_image %>
+                </div>
+                <span class="inline-block"><%= @product.title %></span>
+                <span class="inline-block"><%= format_price @product.price %></span>
             </div>
+
+            <div class="total-cart-amount">
+                <span>Total</span>
+                <span>
+                    <%= format_price(@total_amount + @shipping) %>
+                </span>
+            </div>
+
             <div id="guest-delivery-faq">
                 <p>
                 It takes 7 days for the item to delivered by our service providers.
@@ -34,9 +47,13 @@
                 <%= f.input :address_line_a, as: :text, required: true %>
                 <%= f.input :address_line_b, as: :text %>
                 <%= f.input :zip_code, required: true %>
-                <div class="phone_number_wrapper">
+                <div class="phone_number_wrapper guest_info_form_wrapper">
+                    <label class="phone required"> 
+                        <abbr title="required">*</abbr>
+                        Phone
+                    </label>
                     <%= f.select :phone_country_code, country_code_list, required: true %>
-                    <%= f.input :phone_number, as: :integer, required: true, wrapper_html: { id: 'guest-phone-number' } %>
+                    <%= f.input :phone_number, as: :integer, required: true, label: false, wrapper_html: { id: 'guest-phone-number', class: 'input integer required guest_order_builder_form_phone_number' } %>
                 </div>
             </section>
 
@@ -46,22 +63,21 @@
                 <%= ff.input :quantity, as: :hidden %>
             <% end %>
 
-            <section class="flex-row guest_checkout_info_section" id="payment_info">
+            <section class="guest_checkout_info_section" id="payment_info">
                 <h3>Billing Details</h3>
-                <div class="flex-col">
-                    <span class="inline_block">Total:</span>
-                    <span class="inline_block">
+                <div class="flex flex-row space-between">
+                    <span class="inline-block">Total:</span>
+                    <span class="inline-block">
                         <%= format_price @total_amount %>
                     </span>
                 </div>
-                <div class="flex-col">
-                    <span class="inline_block">Shipping: </span>
-                    <span class="inline_block">0</span>
+                <div class="flex flex-row space-between">
+                    <span class="inline-block">Shipping: </span>
+                    <span class="inline-block">0</span>
                 </div>
-                <span class="inline_block"></span>
-                <div class="flex-col">
-                    <span class="inline_block bold">Total </span>
-                    <span class="inline_block bold">
+                <div class="flex flex-row space-between checkout-total">
+                    <span class="inline-block bold">Total </span>
+                    <span class="inline-block bold">
                         <%= format_price(@total_amount + @shipping) %>
                     </span>
                 </div>

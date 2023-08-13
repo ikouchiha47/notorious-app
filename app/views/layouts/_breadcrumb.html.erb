@@ -1,12 +1,16 @@
-<div id="breadcrumb">
+<div class="breadcrumbs">
     <% unless controller_name == "home" && action_name == "index" %>
-        <%= link_to "Home", root_path %> &gt;
+        <%= link_to "Home", root_path, class: 'breadcrumb' %>
     <% end %>
     <% breadcrumbs.each do |item| %>
-        <% if item == breadcrumbs.last %>
-            <%= item[:title] %>
+        <% if item[:skip] %>
+            <% next %>
+        <% elsif item == breadcrumbs.last %>
+            <a href="#" class="clean-anchor">
+                <%= item[:title] %>
+            </a>
         <% else %>
-            <%= link_to item[:title], item[:url] %> &gt;
+            <%= link_to item[:title], item[:url], class: 'breadcrumb' %>
         <% end %>
     <% end %>
 </div>
