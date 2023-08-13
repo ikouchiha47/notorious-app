@@ -1,41 +1,9 @@
-<li>
-  <img src='<%= image_url("mockups/chemical_x_black_flat.png") %>'/>
-  <span>chemical x</span>
-</li>
-<li>
-  <img src='<%= image_url("mockups/chemical_x_black_man.png") %>'/>
-  <span>chemical x</span>
-</li>
+<li id="<%= dom_id product %>">
+  <img src='<%= image_url(product.promoted_image) %>'/>
+  <span><%= product.title %></span>
 
-<li>
-  <img src='<%= image_url("mockups/chemical_x_black_flat.png") %>'/>
-  <span>pizza senses</span>
+  <a class="card-overlay" href="<%= product_url(product) %>"></a>
 </li>
-<li>
-  <img src='<%= image_url("mockups/chemical_x_white_man.png") %>'/>
-  <span>pizza senses are tingling</span>
-</li>
-
-<li>
-  <img src='<%= image_url("mockups/chemical_x_black_flat.png") %>'/>
-  <span>chemical x</span>
-</li>
-
-<li>
-  <img src='<%= image_url("mockups/chemical_x_white_flat.png") %>'/>
-  <span>chemical x</span>
-</li>
-
-<li>
-  <img src='<%= image_url("mockups/chemical_x_black_man.png") %>'/>
-  <span>chemical x</span>
-</li>
-
-<li>
-  <img src='<%= image_url("mockups/chemical_x_white_man.png") %>'/>
-  <span>brains in the family</span>
-</li>
-
 
 <!--
   <div class="card" id="<%= dom_id product %>>">

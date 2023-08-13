@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :add_products_crumb, only: %i[ show index ]
+  before_action :add_products_crumb, only: %i[show index]
 
   def index
     @categories = Category.all
@@ -20,7 +20,6 @@ class ProductsController < ApplicationController
   private
 
   def add_products_crumb
-    add_breadcrumb("Products", products_url)
+    add_breadcrumb('Products', products_url)
   end
-
 end

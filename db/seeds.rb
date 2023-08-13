@@ -22,72 +22,88 @@ def build_products
   sku_provider = 'Printify'
   category_id = Category.first.id
 
-  10.times do
+  10.times do |i|
+    images = 'mockups/chemical_x_black_flat.png'
+    title = 'Chemical X'
+
+    if (i % 3).zero?
+      images = 'mockups/chemical_x_white_man.png'
+      title = 'Brains of family'
+    elsif (i % 5).zero?
+      images = 'mockups/chemical_x_black_man.png'
+      title = 'Sawadika'
+    end
+
     Product.create!({
-      sku:,
-      sku_provider:,
-      title: 'Chemical X',
-      price: 1200 * 100,
-      images: ['https://placehold.co/400x400', 'https://placehold.co/400x400'].join(','),
-      available: true,
-      gender: 'unisex',
-      category_id:,
-      product_type: 'regular::tee'
-    })
+                      sku:,
+                      sku_provider:,
+                      title:,
+                      price: 1200 * 100,
+                      images:,
+                      available: true,
+                      gender: 'unisex',
+                      category_id:,
+                      product_type: 'regular::tee'
+                    })
   end
 
-  10.times do
+  10.times do |i|
+    images = 'mockups/chemical_x_black_flat.png'
+    title = 'Chemical X'
+
+    if (i % 3).zero?
+      images = 'mockups/chemical_x_black_man.png'
+      title = 'Pizza senses'
+    elsif (i % 5).zero?
+      images = 'mockups/chemical_x_white_man.png'
+      title = 'Graphic'
+    end
+
     Product.create!({
-      sku:,
-      sku_provider:,
-      title: 'Chemical X',
-      price: 1497 * 100,
-      images: ['https://placehold.co/400x400', 'https://placehold.co/400x400'].join(','),
-      available: true,
-      gender: 'unisex',
-      category_id:,
-      product_type: 'over::tee'
-    })
+                      sku:,
+                      sku_provider:,
+                      title:,
+                      price: 1497 * 100,
+                      images:,
+                      available: true,
+                      gender: 'unisex',
+                      category_id:,
+                      product_type: 'over::tee'
+                    })
   end
+end
+
+def create_each(product, style)
+  ProductItem.create!({ id: ULID.generate, product_id: product.id, details: style })
 end
 
 def build_items
   products = Product.take(9)
-
   over_tshirt = {
     "style": 'over::tee',
     "details": {
-      "shoulder_sizes": [18, 19, 20],
-      "chest_sizes": [40, 42, 44],
+      "dimensions": [[20, 27, 17], [21, 28, 18], [22, 29, 18.5]],
       "sizes": %w[M L XL],
-      "colors": ['blue']
+      "colors": %w[blue black green]
     }
   }
   tshirt = {
     "style": 'regular::tee',
     "details": {
-      "shoulder_sizes": [18, 19, 20],
-      "chest_sizes": [40, 42, 44],
+      "dimensions": [[20, 27, 17], [21, 28, 18], [22, 29, 18.5]],
       "sizes": %w[M L XL],
-      "colors": ['blue']
-
+      "colors": %w[blue black green]
     }
   }
 
   panties = {
     "style": 'panties',
     "details": {
-      "waist_sizes": [32, 34, 36, 40],
-      "taper_angle": 2,
-      "sizes": %w[M L XL XXL],
-      "colors": ['blue']
+      "dimensions": [[30, 39, 2], [32, 40, 2], [34, 41, 2]],
+      "sizes": %w[M L XL],
+      "colors": %w[blue black green]
     }
   }
-
-  def create_each(product, style)
-    ProductItem.create!({ id: ULID.generate, product_id: product.id, details: style })
-  end
-
   3.times do |i|
     create_each(products[i], over_tshirt)
   end
@@ -102,13 +118,16 @@ def build_items
 end
 
 def create_guest_user
-  User.first_or_create!(password: 'ikea', country_code: 0, number: 1234560, verified: false, email: 'vindy.ssa@mailinator.com')
+  User.first_or_create!(
+    password: 'ikea',
+    country_code: 0, number: 1_234_560,
+    verified: false, email: 'vindy.ssa@mailinator.com'
+  )
 end
 
+# create_guest_user
 
-create_guest_user
-
-build_categories
+# build_categories
 build_products
 
 build_items

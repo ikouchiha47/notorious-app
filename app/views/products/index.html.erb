@@ -1,19 +1,18 @@
-<p style="color: green"><%= notice %></p>
+<div class="screen-gap"></div>
 
 <div class="explore-all-wrapper">
   <div id="categories">
+    <div class="category_item active" id="default-category">
+      <%= link_to "all", "#" %>
+    </div>
     <% @categories.each do |category| %>
       <%= render category %>
     <% end %>
   </div>
 
-  <section class="product-listing">
-    <header>
-      <h3>all</h3>
-    </header>
-
+  <section class="product-listing container-max-width">
     <div class="items-wrapper">
-      <ul class="product-items-listing md-auto-fit">
+      <ul class="product-items-listing">
         <% @products.each do |product| %>
           <%= render product  %>
         <% end  %>

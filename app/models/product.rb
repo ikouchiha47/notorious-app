@@ -2,11 +2,10 @@ class Product < ApplicationRecord # :nodoc:
   include Uidable
 
   GARMENT_TYPES = {
-    "#{::GarmentTypes::OVER_TEE}" => "Oversized Tees",
-    "#{::GarmentTypes::REGULAR_TEE}" => "Regular Tees",
-    "#{::GarmentTypes::PANTIES}" => "Baggy Tracks",
+    "#{::GarmentTypes::OVER_TEE}" => 'Oversized Tees',
+    "#{::GarmentTypes::REGULAR_TEE}" => 'Regular Tees',
+    "#{::GarmentTypes::PANTIES}" => 'Baggy Tracks'
   }
-
 
   has_one :product_item
   belongs_to :category
@@ -27,7 +26,6 @@ class Product < ApplicationRecord # :nodoc:
 
   validates :category_id, presence: true
 
-
   # created_at, #updated_at
 
   def promoted_image
@@ -45,7 +43,6 @@ class Product < ApplicationRecord # :nodoc:
     product_type == ::GarmentTypes::OVER_TEE
   end
 
-
   def regular_tee?
     product_type == ::GarmentTypes::REGULAR_TEE
   end
@@ -54,9 +51,8 @@ class Product < ApplicationRecord # :nodoc:
     product_type == ::GarmentTypes::PANTIES
   end
 
-
   def self.available
-    where({ available: true })
+    where({ available: true }).order('created_at ASC')
   end
 
   def self.featured

@@ -1,93 +1,93 @@
-<div
-    id="product_details_wrapper"
-    data-controller="cart-add"
-    data-cart-add-target="productItem"
-    data-cart-url="<%= carts_url %>"
-    data-is-logged-in="<%= logged_in? ? 'true' : 'false' %>"
-    data-item-id="<%= @product_details[:item_id] %>"
->
-    <div
-        class="product_details__image_wrapper"
-    >
-        <!-- need to show all image in c arousal -->
-        <%= image_tag @product.promoted_image %>
-    </div>
-
-    <div class="product_details__info">
-        <section id="description">
+<header class="product-title line-top">
             <h2><%= @product.title %></h2>
+        </header>
+<div
+        id="product_details_wrapper"
+        data-controller="cart-add"
+        data-cart-add-target="productItem"
+        data-cart-url="<%= carts_url %>"
+        data-is-logged-in="<%= logged_in? ? 'true' : 'false' %>"
+        data-item-id="<%= @product_details[:item_id] %>"
+        >
+        
 
-            <% if @product.description.present? %>
-                <em><%= @product.description %></em>
-            <% else %>
-                <em>
-                    Get your X factor out. Professor mixed up in the lab, so did we.
-                </em>
-            <% end %>
-        </section>
+        <div class="flex flex-col full-width">
+            <div class="product_details__image_wrapper">
+                <!-- need to show all image in c arousal -->
+                <%= image_tag @product.promoted_image %>
+            </div>
+            
+        </div>
 
-        <p class="price"><%= format_price @product.price %></p>
-
-        <section id="chaufferr">
-
-            <div class="cta_component">
-                <div class="cta_icon" id="size-chart">
-                    <img
-                        src="<%= asset_path('size_guide.svg') %>"
-                    />
-                </div>
-                <div class="dropdown">
-                    <%= select(
-                        :cart,
-                        :size_id,
-                        size_options_for_select(@product_details.size_chart),
-                        { prompt: 'Choose a Size' },
-                        { class: 'dropdown-select product_details__cta_btn',
-                            data: {cart_add_target: 'selectSize' }}
-                    ) %>
-                </div>
+        <div class="flex flex-col full-width">
+            <div class="product_details__info">
+                <section id="description">
+                <% if @product.description.present? %>
+                    <em><%= @product.description %></em>
+                <% else %>
+                    <em>
+                        Get your X factor out. Professor mixed up in the lab, so did we.
+                    </em>
+                <% end %>
+            </section>
+                <section class="size-select">
+                    <header class="flex flex-row align-end" style="--gap: 2em;">
+                        <h3 class="product-option-header">select size</h3>
+                        <a class="product-option-helper" href="#">size guide</a>
+                    </header> 
+                    <ul class="sizes">
+                        <% size_options_for_select(@product_details.size_chart).each do |size| %>
+                            <li>
+                                <%= radio_button_tag :size_id, size[1], false, {class: 'product-size-option', data: {cart_add_target: 'selectSize'}} %>
+                                <%= label_tag "size_id_#{size[1]}", size[0] %>
+                            </li>
+                        <% end %>
+                    </ul>
+                </section>
             </div>
 
-            <div class="cta_component">
-                <div class="cta_icon" id="cart-icon">
-                    <img
-                        src="<%= asset_path ('cart_icon.svg') %>"/>
-                </div>
-                <% if logged_in? %>
-                    <button
-                        id="add-to-cart-btn"
-                        data-action="cart-add#addToCart"
-                        data-cart-add-target="addToCartIcon"
-                        class="product_details__cta_btn">
-                        Add to Cart
-                    </button>
-                <% end %>
+            <section id="chaufferr">
+                <p class="price"><%= format_price @product.price %></p>
 
-                <%= simple_form_for @form, url: guest_buy_checkouts_url, method: :post, html: {data: { action: 'submit->cart-add#directBuy'}} do |f| %>
-                    <%= f.input :item_id,
-                                as: :hidden,
-                                input_html: {
-                                    data: {'cart-add-target': 'buyNowItemID' },
-                                    value: @product_details[:item_id] }
-                    %>
-                    <%= f.input :size,
-                                as: :hidden,
-                                input_html: {
-                                    data: {'cart-add-target': 'buyNowSize'} }
-                    %>
+                <div class="cta_component">
+                    <% if logged_in? %>
+                        <div class="cta_icon" id="cart-icon">
+                            <img src="<%= asset_path ('cart_icon.svg') %>"/>
+                        </div>
+                        <button
+                                id="add-to-cart-btn"
+                                data-action="cart-add#addToCart"
+                                data-cart-add-target="addToCartIcon"
+                                class="product_details__cta_btn">
+                            Add to Cart
+                        </button>
+                    <% end %>
+
+                    <%= simple_form_for @form, url: guest_buy_checkouts_url, method: :post, html: {data: { action: 'submit->cart-add#directBuy'}} do |f| %>
+                        <%= f.input :item_id,
+                            as: :hidden,
+                            input_html: {
+                                data: {'cart-add-target': 'buyNowItemID' },
+                                value: @product_details[:item_id] }
+                            %>
+                        <%= f.input :size,
+                        as: :hidden,
+                        input_html: {
+                            data: {'cart-add-target': 'buyNowSize'} }
+                        %>
                     <%= f.input :quantity,
-                                as: :hidden,
-                                input_html: {
-                                    data: {'cart-add-target': 'buyNowQuantity'},
-                                    value: 1 }
-                    %>
+                        as: :hidden,
+                        input_html: {
+                            data: {'cart-add-target': 'buyNowQuantity'},
+                            value: 1 }
+                        %>
                     <%= f.button :submit,
-                                 "Buy Now",
-                                 id: "checkout-btn",
-                                 class: "product_details__cta_btn"
+                        "Buy Now",
+                        id: "checkout-btn",
+                        class: "product_details__cta_btn"
                     %>
-                <% end %>
-            </div>
-        </section>
-    </div>
+            <% end %>
+                </div>
+            </section>
+        </div>
 </div>

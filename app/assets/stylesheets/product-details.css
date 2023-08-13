@@ -1,0 +1,146 @@
+.line-top {
+  border-top: 1px solid var(--black);
+}
+
+#product_details_wrapper {
+  display: flex;
+  flex-direction: var(--dir, column);
+  align-items: var(--align, center);
+  gap: 1.2em;
+  width: 100vw;
+  height: auto;
+  min-height: 100vh;
+}
+
+.product-title {
+  padding-block: 2em;
+  text-align: center;
+}
+
+.product-title h2 {
+  font-size: 2em;
+  font-family: var(--font-second);
+  font-weight: 800;
+}
+
+.product_details__image_wrapper {
+  width: 100%;
+  aspect-ratio: 4/5;
+}
+
+.product_details__image_wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#description {
+  --pi-block-gap: 2em;
+}
+
+.product_details__info {
+  padding: 0.5em var(--content-gutter);
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  width: 100%;
+}
+
+.size-select header {
+  margin-bottom: 2em;
+}
+
+.product-option-header {
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.product-option-helper {
+  font-size: 0.6em;
+  color: #666;
+  padding-bottom: 0.4em;
+}
+
+.sizes {
+  display: flex;
+  list-style: none;
+  gap: 1em;
+}
+
+.sizes li {
+  width: 1.6em;
+  height: 1.6em;
+  position: relative;
+  cursor: pointer;
+}
+
+.sizes li > * {
+  width: inherit;
+  height: inherit;
+}
+
+.sizes label {
+  display: inline-block;
+  text-align: center;
+  border: 1px solid;
+  border-radius: 2px;
+}
+
+.product-size-option {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.sizes input[type=radio]:checked+label {
+  background-color: var(--green);
+  font-weight: 600;
+  box-shadow: 1px 1px 2px #666;
+}
+
+#chaufferr {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5em var(--content-gutter);
+  margin-top: 2em;
+  align-items: flex-end;
+}
+
+.price {
+  font-family: var(--font-second);
+  font-weight: 700;
+  font-size: 1.3em;
+}
+
+.cta_component .product_details__cta_btn {
+  cursor: pointer;
+  border-radius: 5px;
+  color: ;
+  background: var(--orange);
+  border: 1px solid var(--orange);
+  padding: 0.5em 1em;
+  font-weight: 800;
+  color: white;
+  font-weight: ;
+  font-size: 1.3em;
+  box-shadow: 1px 1px 2px #5d4646;
+}
+
+@media (min-width: 64em) {
+  #product_details_wrapper {
+    --dir: row;
+    --align: flex-start;
+    
+    width: min(120em, 80vw);
+    margin-inline: auto;
+  }
+
+  #chaufferr {
+    gap: 1em;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+
