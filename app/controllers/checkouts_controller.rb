@@ -39,6 +39,8 @@ class CheckoutsController < ApplicationController
           )
         end
       end
+
+      return
     end
 
     begin
