@@ -11,6 +11,7 @@ class ProductDetail
 
   def get
     return if @product.nil?
+    return if @product.product_item.nil?
 
     if @product.pants?
       return ::Apparels::Panties.new(
@@ -48,7 +49,7 @@ class ProductDetail
   end
 
   def item_id
-    @product.product_item.id
+    @product.product_item&.id
   end
 
   def measure_unit

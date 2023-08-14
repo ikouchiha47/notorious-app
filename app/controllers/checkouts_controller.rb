@@ -4,13 +4,13 @@ class CheckoutsController < ApplicationController
     raise Unprocessible unless order.valid?
 
     session[:cart_token] = cart_token
-    session[cart_token] << guest_buy_params
+    session[cart_token] = guest_buy_params
 
     redirect_to guest_order_carts_url(token: cart_token)
   end
 
   def create
-    @product_item = ProductItem.includes(:product).find_by!(id: guest_buy_params[:item_id])
+    @product_item = ProductItem.includes(:product).find_by!(id: order_item[:item_id])
     @product = @product_item.product
 
     @outofstock = @product_item.quantity <= 0
@@ -18,11 +18,33 @@ class CheckoutsController < ApplicationController
     redirect_to products_url and return if @outofstock
 
     @shipping = 0
-    @total_amount = @product.price.to_i * guest_buy_params[:quantity].to_i
+    @total_amount = @product.price.to_i * order_item[:quantity].to_i
 
     @form = GuestOrderBuilderForm.new(*guest_order_builder_form)
 
-    if @form.valid? && @form.save
+    unless @form.valid?
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            'guest-checkout-form',
+            partial: 'carts/form',
+            locals: {
+              form: @form,
+              total_amount: @total_amount,
+              shipping: @shipping,
+              outofstock: @outofstock,
+              show_payment: false,
+              order_token: nil
+            }
+          )
+        end
+      end
+    end
+
+    begin
+      @form.save!
+      @success = true
+
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
@@ -39,23 +61,25 @@ class CheckoutsController < ApplicationController
           )
         end
       end
-    end
+    rescue StandardError => e
+      p e
+      @guest_order_error = 'Something went wrong'
 
-    respond_to do |format|
-      format.turbo_stream do
-        p @form.errors
-        render turbo_stream: turbo_stream.replace(
-          'guest-checkout-form',
-          partial: 'carts/form',
-          locals: {
-            form: @form,
-            total_amount: @total_amount,
-            shipping: @shipping,
-            outofstock: @outofstock,
-            show_payment: false,
-            order_token: nil
-          }
-        )
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            'guest-checkout-form',
+            partial: 'carts/form',
+            locals: {
+              form: @form,
+              total_amount: @total_amount,
+              shipping: @shipping,
+              outofstock: @outofstock,
+              show_payment: false,
+              order_token: nil
+            }
+          )
+        end
       end
     end
   end
@@ -73,6 +97,10 @@ class CheckoutsController < ApplicationController
   end
 
   def guest_buy_params
+    params.require(:guest_buy_form).permit(:item_id, :size, :quantity)
+  end
+
+  def order_item
     guest_order_builder_form[:order_item_builder]
   end
 

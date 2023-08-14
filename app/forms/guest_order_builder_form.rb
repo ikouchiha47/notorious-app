@@ -63,12 +63,12 @@ class GuestOrderBuilderForm
     "+#{phone_country_code}-#{phone_number}"
   end
 
-  def save!
-    # we are here meaning the user existence is validated
-    # here the password will be generate for first time users
-    # we also need to validate and save the address
-    # we need to create an order with a random cart_id prefixed with guest_{cart_id}
+  # we are here meaning the user existence is validated
+  # here the password will be generate for first time users
+  # we also need to validate and save the address
+  # we need to create an order with a random cart_id prefixed with guest_{cart_id}
 
+  def save!
     @success = false
     return unless valid?
 
@@ -111,6 +111,7 @@ class GuestOrderBuilderForm
                                order_token_expires_at: 2.days.since.utc
                              })
 
+      order_item.update!(quantity: order_item.quantity - 1)
       @success = true
     end
   end

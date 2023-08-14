@@ -25,8 +25,8 @@ class ApplicationController < ActionController::Base
 
   def not_found
     # raise ActionController::RoutingError.new('Not Found')
-    flash[:error] = 'something went wrong'
-    redirect_back(fallback_location: root_path)
+    flash[:error] = 'Item sold out'
+    redirect_back(fallback_location: root_path) and return
   end
 
   def current_user

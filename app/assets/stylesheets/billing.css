@@ -187,3 +187,15 @@
 .new_guest_order_builder_form .error {
   font-size: 0.75em;
 }
+
+#pay-me-now {
+  display: flex;
+  flex-direction: var(--dir, column);
+  gap: 1em;
+}
+
+@media (min-width: 40em) {
+  #pay-me-now {
+    --dir: row;
+  }
+}

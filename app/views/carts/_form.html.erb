@@ -53,14 +53,18 @@
       </section>
 
       <section id="pay-me-now">
-        <% if outofstock %>
-          <div class='place_order_btn_lg outofstock'>Sold Out</div>
-          <%= f.button :submit, "Place Order", { class: 'place_order_btn_lg' } %>
-        <% elsif show_payment %>
+        <% if outofstock.present? %>
+          <div class='place_order_btn_lg btn-outofstock'>Sold Out</div>
+        <% elsif show_payment.present? %>
           <%= render partial: "carts/pay", locals: { order_token: order_token } %>
         <% else %>
           <%= f.button :submit, "Place Order", { class: 'place_order_btn_lg' } %>
         <% end %>
+
+        <% if @guest_order_error.present? %>
+          <span class="form-inline-error" style="font-size: 0.9em"><%= @guest_order_error %></span>
+        <% end %>
+
       </section>
     <% end %>
   <% end %>

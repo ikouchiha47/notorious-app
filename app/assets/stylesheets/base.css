@@ -63,7 +63,7 @@ html, body {
 }
 
 body {
-    background-color: var(--white);
+    background-color: #dcdbd8;
     margin: 0 auto;
     padding-bottom: 50px;
 }
@@ -167,6 +167,15 @@ a.clean-anchor:visited {
   font-size: 0.6em;
   color: red;
   font-weight: bold;
+}
+
+.btn-outofstock {
+    background-color: #666;
+}
+
+.btn-pay {
+    background-color: var(--yellow);
+
 }
 
 /* navigation  start */
