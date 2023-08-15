@@ -2,9 +2,13 @@ class User < ApplicationRecord
   include Uidable
   include BCrypt
 
-  GUEST_USER = 'guest'
+  GUEST_USER = 'guest'.freeze
+  UNVERIFIED_USER = 'unverified'.freeze
+  VERIFIED_USER = 'verified'.freeze
 
   validates :email, :user_type, :country_code, :number, presence: true
+  validates :email, email_format: true
+
   validates :country_code, numericality: {
     only_integer: true,
     greater_than_or_equal_to: 0,
@@ -12,8 +16,11 @@ class User < ApplicationRecord
   }
   validates :number, length: { in: 6..20 }
 
-
   has_many :addresses
+
+  def authenticate(plain_password)
+    password == plain_password
+  end
 
   def password
     @password ||= Password.new(hashed_password)
@@ -24,17 +31,43 @@ class User < ApplicationRecord
     self.hashed_password = @password
   end
 
-  def create_guest_user
-    User.first_or_create!(
-      password: 'ikea',
-      country_code: 0,
-      number: 0,
-      verified: false,
-      email: 'vindy.ssa@mailinator.com'
-    )
+  def guest?
+    user_type == GUEST_USER and !user.verified
   end
 
-  def is_guest?
-    user.type == "guest" and user.verified
+  def member?
+    user_type == UNVERIFIED_USER || user_type == VERIFIED_USER
+  end
+
+  def verified?
+    user_type == VERIFIED_USER
+  end
+
+  class << self
+    def create_guest_user(email:, password:)
+      opts = {
+        email:,
+        password:,
+        verified: false,
+        user_type: GUEST_USER,
+        country_code: 0,
+        number: 1_000_000
+      }
+
+      User.create(opts)
+    end
+
+    def create_unverified_user(email:, password:)
+      opts = {
+        email:,
+        password:,
+        verified: false,
+        user_type: UNVERIFIED_USER,
+        country_code: 0,
+        number: 1_000_000
+      }
+
+      User.create(opts)
+    end
   end
 end

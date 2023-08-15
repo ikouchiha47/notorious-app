@@ -1,0 +1,40 @@
+<section class="accounts-form">
+  <header>
+    <h4>Login</h4>
+  </header>
+  <%= simple_form_for form, 
+    url: accounts_login_url, 
+    method: :post, 
+    html: {
+      class: 'flex flex-col login-form', id: 'new_login_form'
+  } do |f| %>
+    <%= f.input :email,
+      as: :email,
+      required: true, 
+      wrapper_html: {
+        class: 'flex flex-col',
+        style: '--gap: 0.6em'
+      },
+      input_html: {
+        class: 'flat-input',
+        data: { 'login-target': 'emailAddr' }
+      } 
+    %>
+    <%= f.input :password,
+      as: :password,
+      required: true,
+      wrapper_html: {
+        class: 'flex flex-col',
+        style: '--gap: 0.6em'
+      },
+      input_html: {
+        class: 'flat-input',
+        data: { 'login-target': 'password'}
+      }
+    %>
+    <div class="accounts-btn-wrapper flex flex-row space-between">
+      <%= f.button :submit, "Login", id: "login-btn", class: "btn accounts-cta-btn", data: { action: 'click->accounts#validateAndLogin'} %>
+      <a href="#" data-href="<%= accounts_recover_url %>" data-login-target="resetPassword" data-action="click->accounts#resetPassword">Reset password</a>
+    </div>
+  <% end %>
+</section>

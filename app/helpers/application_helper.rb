@@ -18,6 +18,11 @@ module ApplicationHelper
   def current_user; end
 
   def logged_in?
-    !!session[:user_token]
+    session[:access_token].present? && session[:refresh_token].present?
+  end
+
+  def flashes(type, texts)
+    flash[type] ||= []
+    flash[type].concat texts
   end
 end

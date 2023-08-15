@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/ikouchiha47/better_validations.git
+  revision: 95383529251df2a4b4436830acc3cf8d74c23b3b
+  specs:
+    better_validations (0.1.0)
+      countries (~> 5.6)
+      phony_rails (~> 0.15)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -86,7 +94,7 @@ GEM
       xpath (~> 3.2)
     coderay (1.1.3)
     concurrent-ruby (1.2.2)
-    countries (5.5.0)
+    countries (5.6.0)
       unaccent (~> 0.3)
     country_select (8.0.1)
       countries (~> 5.0)
@@ -138,6 +146,10 @@ GEM
     nokogiri (1.15.3-x86_64-linux)
       racc (~> 1.4)
     pg (1.5.3)
+    phony (2.20.7)
+    phony_rails (0.15.0)
+      activesupport (>= 3.0)
+      phony (>= 2.18.12)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -232,6 +244,7 @@ PLATFORMS
 DEPENDENCIES
   aasm (~> 5.5)
   bcrypt (~> 3.1.7)
+  better_validations (~> 0.1.0)!
   bootsnap
   capybara
   countries (~> 5.5)

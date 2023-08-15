@@ -10,23 +10,37 @@
   </button>
 
   <nav class="nav-options">
-    <ul 
-       id="primary-nav" 
-       data-action="cart-add:updated@window->cart-count#update"
-       data-controller="cart-count"
-       data-state="close">
-      <li>
+    <ul id="primary-nav" data-state="close">
+      <% if logged_in? %>
+        <li 
+          data-action="cart-add:updated@window->cart-count#update"
+          data-controller="cart-count"
+        >
         <span aria-hidden="true" class="material-symbols-outlined">
           shopping_cart
         </span>
-        <span data-cart-count-target="itemCount">Cart</span>
-      </li>
-      <li>
-        <span aria-hidden="true" class="material-symbols-outlined">
-          account_circle
-        </span>
-        <span>Login</span>
-      </li>
+        <span data-cart-count-target="itemCount" class="header-nav">Cart</span>
+        </li>
+        <li>
+          <span aria-hidden="true" class="material-symbols-outlined">
+            account_circle
+          </span>
+          <%= link_to "Profile", accounts_url, class: 'clean-anchor header-nav' %>
+        </li>
+        <li>
+          <span aria-hidden="true" class="material-symbols-outlined">
+            account_circle
+          </span>
+          <%= link_to "Logout", accounts_logout_url, data: { "turbo-method": :delete }, class: 'clean-anchor header-nav' %>
+        </li>
+      <% else %>
+        <li>
+          <span aria-hidden="true" class="material-symbols-outlined">
+            account_circle
+          </span>
+          <%= link_to "Accounts", accounts_url, class: 'clean-anchor header-nav' %>
+        </li>
+      <% end %>
     </ul>
   </nav>
 </header>

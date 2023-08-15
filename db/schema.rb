@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_31_024708) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_15_172338) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -94,16 +94,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_31_024708) do
 
   create_table "tokens", id: false, force: :cascade do |t|
     t.string "token_type", null: false
-    t.string "token", null: false
+    t.string "hashed_token", null: false
     t.datetime "expires_at", null: false
-    t.string "refresh_token"
+    t.string "hashed_refresh_token"
     t.datetime "refresh_expires_at"
     t.boolean "revoked", default: false, null: false
     t.string "resource_id", null: false
     t.string "resource_type"
+    t.index ["hashed_token", "hashed_refresh_token"], name: "index_tokens_on_hashed_token_and_hashed_refresh_token"
+    t.index ["hashed_token", "token_type"], name: "index_tokens_on_hashed_token_and_token_type"
     t.index ["resource_id"], name: "index_tokens_on_resource_id"
-    t.index ["token", "refresh_token"], name: "index_tokens_on_token_and_refresh_token"
-    t.index ["token", "token_type"], name: "index_tokens_on_token_and_token_type"
   end
 
   create_table "users", id: :string, force: :cascade do |t|

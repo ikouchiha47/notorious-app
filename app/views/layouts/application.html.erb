@@ -14,9 +14,17 @@
       <%= render partial: "layouts/header" %>
       <%= render partial: "layouts/breadcrumb" %>
 
-      <% flash.each do |type, msg| %>
-          <%= render partial: 'layouts/flash', locals: { flash_type: type, flash_msg: msg } %>
-      <% end %>
+      <div class="toast-wrapper" data-toast-target="toaster" data-controller="toast">
+        <% flash.each do |type, msgs| %>
+          <% if msgs.is_a?(String) %>
+            <%= render partial: 'layouts/flash', locals: { flash_type: type, flash_msg: msgs } %>
+          <% elsif msgs.is_a?(Array) %>
+            <% msgs.each do |msg| %>
+              <%= render partial: 'layouts/flash', locals: { flash_type: type, flash_msg: msg } %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
       <%= yield %>
   </body>
 

@@ -1,14 +1,11 @@
-<div class="toast" data-toast-target="toaster" data-controller="toast">
-    <section class="toaster_contents">
-    <div class="toast-header">
-        <strong class="flash_message"><%= flash_type.to_s.capitalize %></strong>
+<div class="toast">
+    <section class='<%= "toaster_contents toast-#{flash_type.downcase}" %>'>
+
+    <div class="toast-body">
+        <span><%= flash_msg %></span>
         <span class="close" data-action="click->toast#closeToast" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </span>
     </div>
-    <div class="toast-body">
-        <%= flash_msg %>
-    </div>
     </section>
-    <span class="expiry_meter" data-toast-target="expiryMeter"></span>
 </div>

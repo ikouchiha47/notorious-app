@@ -1,0 +1,8 @@
+<header class="page-wrapper-title line-block">
+  <h2>Accounts</h2>
+</header>
+<div data-controller="accounts" class="accounts-action-wrapper">
+  <%= render partial: "accounts/login", locals: { form: @login_form } %>
+  <span class="line-separator accounts-form-separator"></span>
+  <%= render partial: "accounts/signup", locals: { form: @signup_form } %>
+</div>

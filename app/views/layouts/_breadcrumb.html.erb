@@ -7,7 +7,7 @@
             <% if item[:skip] %>
                 <% next %>
             <% elsif item == breadcrumbs.last %>
-                <a href="#" class="clean-anchor">
+                <a href="#" class="clean-anchor breadcrumb">
                     <%= item[:title] %>
                 </a>
             <% else %>

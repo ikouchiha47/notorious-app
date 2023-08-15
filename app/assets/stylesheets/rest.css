@@ -69,3 +69,73 @@
     padding: 0px 0.5em 8px;
   }
 }
+
+/* accounts page start */
+/* accounts page end */
+
+.accounts-action-wrapper {
+  display: flex;
+  width: 90%;
+  max-width: 64em;
+  margin-inline: auto;
+  flex-direction: var(--dir, column);
+  justify-content: var(--justify, center);
+  gap: 2em;
+  margin-top: 6em;
+}
+
+.accounts-form {
+  width: 100%;
+  max-width: 450px;
+}
+
+.accounts-form header {
+  margin-bottom: 2em;
+}
+
+.accounts-form h4 {
+  font-family: var(--font-second);
+  font-size: 1.3em;
+  font-weight: 700;
+}
+
+.accounts-form form {
+  --gap: 1.6em;
+}
+
+.accounts-form-separator {
+  --bb: 2px
+}
+
+@media(min-width: 50em) {
+  .accounts-action-wrapper {
+    --dir: row;
+    --justify: space-between;
+  }
+
+  .accounts-form-separator {
+    --bl: 2px
+  }
+}
+
+.accounts-btn-wrapper {
+  align-items: flex-end;
+}
+
+.login-form abbr[title=required],
+.signup-form abbr[title=required]{
+  display: none;
+}
+
+.login-form .error,
+.signup-form .error {
+  display: none;
+}
+
+.flat-input {
+  width: 80%;
+  height: 2em;
+  padding: 4px;
+  border-radius: 0;
+  border: 1px solid var(--black);
+}

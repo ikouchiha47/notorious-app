@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include ApplicationHelper
+
   before_action :set_breadcrumbs
 
   rescue_from Unauthorized, with: :handle_application_error
@@ -17,6 +19,10 @@ class ApplicationController < ActionController::Base
     @breadcrumbs.values
   end
 
+  def not_found_method
+    render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+  end
+
   private
 
   def set_breadcrumbs
@@ -30,10 +36,16 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    return User.new(user_id: nil) unless session[:current_user].present?
+    return User.new(user_id: nil) unless current_token.present? && current_token.valid?
 
-    token = Token.find_user_token!(session[:current_user])
-    @current_user ||= User.find_by!(user_id: token.resource_id)
+    @current_user ||= User.find_by!(user_id: current_token.resource_id)
+    session[:access_token] = current_token.session_token
+  end
+
+  def current_token
+    return nil unless session[:access_token].present? && session[:refresh_token].present?
+
+    @current_token ||= Token.find_by_token(session[:access_token], session[:refresh_token])
   end
 
   def handle_application_error(e)

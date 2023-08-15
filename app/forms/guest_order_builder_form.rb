@@ -35,6 +35,8 @@ class GuestOrderBuilderForm
 
   validates :phone_number, length: { in: 6..20 }
 
+  validates :email, email_format: true
+
   def int?(string)
     return true if string.is_a? Numeric
 
