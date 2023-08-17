@@ -13,6 +13,11 @@
         src: ./mr_notorious.conf
         dest: /etc/nginx/sites-enabled/
 
+    - name: Create acme challenge directory
+      file:
+        path: "{{acme_dir}}"
+        state: directory
+
     - name: Check Nginx Configuration
       command: nginx -t
       changed_when: false
