@@ -209,6 +209,10 @@ a.clean-anchor:visited {
   border-block: 1px solid var(--black);
 }
 
+textarea {
+    resize: var(--resize-dir, vertical);
+}
+
 /* navigation  start */
 .nav-header {
     display: flex;

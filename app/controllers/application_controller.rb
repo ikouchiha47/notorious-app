@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def index; end
 
-  def add_breadcrumb(title, url, skip: false)
+  def add_breadcrumb(title, url, skip = false)
     @breadcrumbs[title] = { title:, url:, skip: }
   end
 

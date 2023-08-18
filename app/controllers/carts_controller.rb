@@ -2,7 +2,7 @@ class CartsController < ApplicationController
   include ApplicationHelper
 
   before_action :logged_in?
-  before_action :validate_token, only: %i[guest_order show]
+  before_action :validate_token, only: %i[show]
 
   # For registered users
   # get user_id from session[:user].id
@@ -138,6 +138,9 @@ class CartsController < ApplicationController
   end
 
   def guest_cart_items
+    cart_token = session[:cart_token]
+    raise ActiveRecord::RecordNotFound unless cart_token.present?
+    raise ::Unauthorized unless cart_token == cart_token_in_params
     raise ActiveRecord::RecordNotFound unless session[cart_token].present?
 
     @guest_cart_items ||= HashWithIndifferentAccess.new session[cart_token]
@@ -149,5 +152,9 @@ class CartsController < ApplicationController
 
   def place_order_params
     params.require(:guest_buy_form).permit(:item_id, :size, :color, :quantity)
+  end
+
+  def cart_token_in_params
+    params.fetch(:token, '')
   end
 end

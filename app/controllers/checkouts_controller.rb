@@ -65,7 +65,13 @@ class CheckoutsController < ApplicationController
       end
     rescue StandardError => e
       p e
-      @guest_order_error = 'Something went wrong'
+      @guest_order_error = if e.is_a? ActiveRecord::RecordNotUnique
+                             'You have already shopped with us. Please consider logging of reset password'
+                           elsif e.is_a? ActiveRecord::RecordInvalid
+                             'You have already shopped with us. Please consider logging of reset password'
+                           else
+                             'Something went wrong'
+                           end
 
       respond_to do |format|
         format.turbo_stream do

@@ -6,7 +6,8 @@ class User < ApplicationRecord
   UNVERIFIED_USER = 'unverified'.freeze
   VERIFIED_USER = 'verified'.freeze
 
-  validates :email, :user_type, :country_code, :number, presence: true
+  validates :user_type, :country_code, :number, presence: true
+  validates :email, presence: true, uniqueness: true
   validates :email, email_format: true
 
   validates :country_code, numericality: {

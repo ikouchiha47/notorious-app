@@ -124,7 +124,7 @@
 }
 
 #new_guest_order_builder_form label.required {
-  color: red;
+  font-weight: bold;
 }
 
 #new_guest_order_builder_form label.required abbr {
@@ -185,12 +185,27 @@
 }
 
 .new_guest_order_builder_form .error {
-  font-size: 0.75em;
+  font-size: 0.8em;
+  color: red;
+  font-weight: 500;
 }
 
 #pay-me-now {
   display: flex;
   flex-direction: var(--dir, column);
+  gap: 1em;
+  height: 50px;
+}
+
+#pay-me-now .form-inline-error {
+  margin-top: 0;
+  font-size: 0.85em;
+  font-weight: 400;
+}
+
+#guest-phone-number {
+  display: flex;
+  flex-direction: column;
   gap: 1em;
 }
 
