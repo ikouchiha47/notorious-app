@@ -12,7 +12,8 @@ class ProductsController < ApplicationController
     @product_details = details.get or not_found
     @product = details.product
 
-    @form = GuestBuyForm.new(quantity: 1)
+    @guest_form = GuestBuyForm.new(quantity: 1)
+    @user_form = GuestBuyForm.new(quantity: 1) if logged_in?
 
     add_breadcrumb(@product.title, nil)
   end

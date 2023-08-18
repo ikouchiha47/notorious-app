@@ -1,3 +1,15 @@
+/* header section start */
+
+#cart-items-count {
+  display: inline-block;
+  background-color: var(--orange);
+  border-radius: 50%;
+  padding: 6px 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+/* header section end */
+
 /* hero section start */
 
 .hero {

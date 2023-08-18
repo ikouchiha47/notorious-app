@@ -1,12 +1,25 @@
+<% button_class ||= [] %>
 
-<%= simple_form_for(@product) do |f| %>
-  <%= f.error_notification %>
-  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
-
-  <div class="form-inputs">
-  </div>
-
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
+<%= simple_form_for form, url: url, method: method, html: html_opts do |f| %>
+  <%= f.input :item_id,
+    as: :hidden,
+    input_html: {
+      data: {'cart-add-target': 'buyNowItemID' },
+      value: product_details[:item_id] }
+    %>
+  <%= f.input :size,
+    as: :hidden,
+    input_html: {
+      data: {'cart-add-target': 'buyNowSize'} }
+    %>
+  <%= f.input :quantity,
+    as: :hidden,
+    input_html: {
+      data: {'cart-add-target': 'buyNowQuantity'},
+      value: 1 }
+    %>
+  <%= f.button :submit,
+    "#{submit_button_text}",
+    class: (button_class << "product_details__cta_btn").join(" ")
+  %>
 <% end %>

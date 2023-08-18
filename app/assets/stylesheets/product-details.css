@@ -95,11 +95,16 @@
 
 #chaufferr {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   width: 100%;
   padding: 0.5em var(--content-gutter);
   margin-top: 2em;
-  align-items: flex-end;
+}
+
+#chaufferr.logged-in {
+  flex-direction: var(--dir, column);
+  gap: 2em;
 }
 
 .price {
@@ -108,21 +113,49 @@
   font-size: 1.3em;
 }
 
+.cta_component {
+  display: flex;
+  flex-direction: var(--dir, row);
+  gap: 1.2em;
+}
+
 .cta_component .product_details__cta_btn {
   cursor: pointer;
   border-radius: 5px;
-  color: ;
   background: var(--orange);
   border: 1px solid var(--orange);
   padding: 0.5em 1em;
   font-weight: 800;
   color: white;
-  font-weight: ;
   font-size: 1.3em;
   box-shadow: 1px 1px 2px #5d4646;
 }
 
+.product_details__cta_btn.add-to-cart-btn {
+  background: var(--blue);
+}
+
+.btn.disabled {
+  background-color: gray;
+  border-color: gray;
+  cursor: default;
+}
+
+@media (min-width: 50em) {
+  #chaufferr.logged-in {
+    --dir: row;
+    align-items: flex-end; 
+  }
+}
+
 @media (min-width: 64em) {
+  #product_details_wrapper {
+    width: min(120em, 80vw);
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 90em) {
   #product_details_wrapper {
     --dir: row;
     --align: flex-start;
@@ -130,12 +163,5 @@
     width: min(120em, 80vw);
     margin-inline: auto;
   }
-
-  #chaufferr {
-    gap: 1em;
-    align-items: flex-start;
-    flex-direction: column;
-  }
 }
-
 

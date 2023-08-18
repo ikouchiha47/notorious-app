@@ -22,10 +22,8 @@ module SessionGenerator
 
     def sign(data, server_key)
       digest = OpenSSL::Digest.new('SHA256')
-      signature = OpenSSL::HMAC.hexdigest(digest, server_key, data)
-      signature
+      OpenSSL::HMAC.hexdigest(digest, server_key, data)
     end
-
 
     private
 
@@ -72,40 +70,40 @@ module SessionGenerator
     w.encode_pepper_mint(request)
   end
 end
-  # # Decoding function
-  # def decode_data(encoded_data, server_key)
-  #   timestamp, browser_id, computer_id, encrypted_data, signature = encoded_data.split('|')
+# # Decoding function
+# def decode_data(encoded_data, server_key)
+#   timestamp, browser_id, computer_id, encrypted_data, signature = encoded_data.split('|')
 
-  #   hk = sign("#{timestamp}|#{browser_id}|#{computer_id}", server_key)
+#   hk = sign("#{timestamp}|#{browser_id}|#{computer_id}", server_key)
 
-  #   if get_timestamp(timestamp) < (Time.now - 1.year).to_i
-  #     return false
-  #   end
+#   if get_timestamp(timestamp) < (Time.now - 1.year).to_i
+#     return false
+#   end
 
-  #   if get_browser_id(browser_id) != create_browser_id(request, ENV)
-  #     return false
-  #   end
+#   if get_browser_id(browser_id) != create_browser_id(request, ENV)
+#     return false
+#   end
 
-  #   if get_computer_id(computer_id) != create_computer_id(request, ENV)
-  #     return false
-  #   end
+#   if get_computer_id(computer_id) != create_computer_id(request, ENV)
+#     return false
+#   end
 
-  #   data_to_verify = "#{timestamp}|#{browser_id}|#{computer_id}|#{encrypted_data}"
-  #   if !verify(data_to_verify, signature, hk)
-  #     return false
-  #   end
+#   data_to_verify = "#{timestamp}|#{browser_id}|#{computer_id}|#{encrypted_data}"
+#   if !verify(data_to_verify, signature, hk)
+#     return false
+#   end
 
-  #   decrypted_data = decrypt(encrypted_data, hk)
-  #   true
-  # end
-  # def get_timestamp(encoded_data)
-  #   encoded_data.split('|')[0].to_i
-  # end
+#   decrypted_data = decrypt(encrypted_data, hk)
+#   true
+# end
+# def get_timestamp(encoded_data)
+#   encoded_data.split('|')[0].to_i
+# end
 
-  # def get_browser_id(encoded_data)
-  #   encoded_data.split('|')[1]
-  # end
+# def get_browser_id(encoded_data)
+#   encoded_data.split('|')[1]
+# end
 
-  # def get_computer_id(encoded_data)
-  #   encoded_data.split('|')[2]
-  # end
+# def get_computer_id(encoded_data)
+#   encoded_data.split('|')[2]
+# end

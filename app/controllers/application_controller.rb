@@ -3,15 +3,17 @@ class ApplicationController < ActionController::Base
 
   before_action :set_breadcrumbs
 
+  before_action :print_seesion_tokens
+
   rescue_from Unauthorized, with: :handle_application_error
   rescue_from Unprocessible, with: :handle_application_error
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
-  helper_method :breadcrumbs
+  helper_method :breadcrumbs, :cart_items_count
 
   def index; end
 
-  def add_breadcrumb(title, url, skip = false)
+  def add_breadcrumb(title, url, skip: false)
     @breadcrumbs[title] = { title:, url:, skip: }
   end
 
@@ -21,6 +23,19 @@ class ApplicationController < ActionController::Base
 
   def not_found_method
     render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+  end
+
+  def cart_items_count
+    return 0 unless session[:cart_token].present?
+
+    current_cart.count(1)
+  end
+
+  def print_seesion_tokens
+    p 'cart token'
+    p session[:cart_token]
+    p 'access token'
+    p session[:access_token]
   end
 
   private
@@ -35,21 +50,8 @@ class ApplicationController < ActionController::Base
     redirect_back(fallback_location: root_path) and return
   end
 
-  def current_user
-    return User.new(user_id: nil) unless current_token.present? && current_token.valid?
-
-    @current_user ||= User.find_by!(user_id: current_token.resource_id)
-    session[:access_token] = current_token.session_token
-  end
-
-  def current_token
-    return nil unless session[:access_token].present? && session[:refresh_token].present?
-
-    @current_token ||= Token.find_by_token(session[:access_token], session[:refresh_token])
-  end
-
-  def handle_application_error(e)
-    flash[:error] = e.message
+  def handle_application_error(err)
+    flash[:error] = err.message
     redirect_back(fallback_location: root_path)
   end
 end

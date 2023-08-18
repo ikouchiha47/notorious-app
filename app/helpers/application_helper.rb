@@ -13,9 +13,22 @@ module ApplicationHelper
     [["#{c.country_code}- #{c.alpha2}", c.country_code]]
   end
 
-  def user_token; end
+  def current_user
+    return User.new(id: nil) unless current_token.present? && current_token.valid?
+    return User.new(id: nil) unless current_token.resource_type == 'user'
 
-  def current_user; end
+    @current_user ||= User.find_by!(id: current_token.resource_id)
+  end
+
+  def current_token
+    return nil unless session[:access_token].present? && session[:refresh_token].present?
+
+    @current_token ||= Token.find_by_token(session[:access_token], session[:refresh_token])
+  end
+
+  def current_cart
+    @current_cart ||= Cart.where(cart_token: session[:cart_token])
+  end
 
   def logged_in?
     session[:access_token].present? && session[:refresh_token].present?

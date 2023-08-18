@@ -87,6 +87,21 @@
 .accounts-form {
   width: 100%;
   max-width: 450px;
+  padding: 2em;
+}
+
+.accounts-form .flat-input {
+  border-radius: 4px;
+}
+
+.accounts-form.login-form-wrapper {
+  background: var(--orange);
+  color: white;
+  box-shadow: 2px 2px 6px hsl(14, 100%, 30%, 0.8);
+}
+
+.login-form-wrapper .flat-input {
+  border-color: var(--white);
 }
 
 .accounts-form header {
@@ -139,3 +154,28 @@
   border-radius: 0;
   border: 1px solid var(--black);
 }
+
+
+/* cart items error start */
+#cart-errors {
+  align-items: flex-start
+}
+
+.cart-error-msg {
+  margin-inline: 2em;
+  margin-top: 2em;
+  color: red;
+  font-weight: bold;
+}
+
+.cart-error-msg::before {
+  content: "x";
+  margin-right: 10px;
+}
+
+@media (min-width: 50em) {
+  #cart-errors {
+    align-items: flex-end
+  }
+}
+/* cart items error end */

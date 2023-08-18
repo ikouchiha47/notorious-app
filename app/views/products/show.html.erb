@@ -48,7 +48,7 @@
                                             action: 'click->cart-add#setSize'}
                                     }
                                 %>
-                                <%= label_tag "size_id_#{size[1]}", size[0] %>
+                            <%= label_tag "size_id_#{size[1]}", size[0] %>
                             </li>
                         <% end %>
                     </ul>
@@ -57,48 +57,35 @@
                 </section>
             </div>
 
-            <section id="chaufferr">
+            <section id="chaufferr" class="<%= logged_in? ? 'logged-in': '' %>">
                 <p class="price"><%= format_price @product.price %></p>
 
                 <div class="cta_component">
-                    <% if logged_in? %>
-                        <div class="cta_icon" id="cart-icon">
-                            <img src="<%= asset_path ('cart_icon.svg') %>"/>
-                        </div>
-                        <button
-                                id="add-to-cart-btn"
-                                data-action="cart-add#addToCart"
-                                data-cart-add-target="addToCartIcon"
-                                class="product_details__cta_btn">
-                            Add to Cart
-                        </button>
-                    <% end %>
+                    <%= render partial: "products/form", locals: {
+                        form: @guest_form,
+                        url: guest_buy_checkouts_url,
+                        method: :post,
+                        product_details: @product_details,
+                        submit_button_text: 'Buy Now',
+                        html_opts: { data: { action: 'submit->cart-add#directBuy'} },
+                    } %>
 
-                    <%= simple_form_for @form, url: guest_buy_checkouts_url, method: :post, html: {data: { action: 'submit->cart-add#directBuy'}} do |f| %>
-                        <%= f.input :item_id,
-                            as: :hidden,
-                            input_html: {
-                                data: {'cart-add-target': 'buyNowItemID' },
-                                value: @product_details[:item_id] }
-                            %>
-                        <%= f.input :size,
-                            as: :hidden,
-                            input_html: {
-                                data: {'cart-add-target': 'buyNowSize'} }
-                            %>
-                        <%= f.input :quantity,
-                        as: :hidden,
-                        input_html: {
-                            data: {'cart-add-target': 'buyNowQuantity'},
-                            value: 1 }
-                        %>
-                    <%= f.button :submit,
-                        "Buy Now",
-                        id: "checkout-btn",
-                        class: "product_details__cta_btn"
-                    %>
-            <% end %>
+                    <% if logged_in? %>
+                        <% button_class =  %>
+                        <%= render partial: "products/form", locals: {
+                            form: @user_form,
+                            url: new_cart_url,
+                            method: :patch,
+                            product_details: @product_details,
+                            submit_button_text: 'Add to Cart',
+                            html_opts: {data: { action: 'submit->cart-add#validate', state: buttton_class_for_add_to_cart(@product_details[:item_id]) }},
+                            button_class: ["add-to-cart-btn", "#{buttton_class_for_add_to_cart(@product_details[:item_id])}"]
+                            } %>
+                    <% end %>
                 </div>
             </section>
+
+            <%= render partial: "products/cart_error", locals: { cart_error_msgs: @cart_error_msgs || [] } %>
+            
         </div>
 </div>

@@ -30,6 +30,9 @@ class AccountsController < ApplicationController
     session[:access_token] = @login_form.token.session_token
     session[:refresh_token] = @login_form.token.session_refresh_token
 
+    p 'session token in session'
+    p session[:access_token]
+
     flash[:notice] = "Welcome back #{@login_form.email.sub(/@.*$/, '')}"
     redirect_to products_url
   end

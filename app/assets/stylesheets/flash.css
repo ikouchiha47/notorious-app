@@ -6,7 +6,7 @@
     /* transform: translateX(50%); */
     height: auto;
     min-height: 100%;
-    z-index: 9999;
+    z-index: 1000;
     
     display: flex;
     flex-direction: column;
@@ -29,7 +29,7 @@
 @keyframes toast-closing {
     from {
         opacity: 1;
-        z-index: 9999;
+        z-index: 1000;
     }
 
     to {
@@ -40,6 +40,7 @@
 
 .toast-wrapper.toast_close {
     animation: 1s linear forwards toast-closing;
+    z-index: -9
 }
 
 .toaster_contents {

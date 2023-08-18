@@ -19,7 +19,10 @@
         <span aria-hidden="true" class="material-symbols-outlined">
           shopping_cart
         </span>
-        <span data-cart-count-target="itemCount" class="header-nav">Cart</span>
+        <div>
+          <%= render partial: 'layouts/cart_items_count', locals: {cart_items_count:} %>
+          <span data-cart-count-target="itemCount" class="header-nav">Cart</span>
+        </div>
         </li>
         <li>
           <span aria-hidden="true" class="material-symbols-outlined">

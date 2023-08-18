@@ -1,13 +1,19 @@
 class ItemProperties
-  SEPERATOR = ';;'
+  SEPERATOR = ';;'.freeze
 
-  def initialize(size:)
-    @properties = {size:}
+  attr_accessor :size, :color, :quantity
+
+  def initialize(params)
+    params.each { |k, v| public_send("#{k}=", v) }
+  end
+
+  def properties
+    @properties ||= { size:, color:, quantity: }
   end
 
   def encode
-    @properties.each_key.reduce([]) do |acc, key|
-      acc << "#{key}:#{@properties[key]}"
+    properties.each_key.reduce([]) do |acc, key|
+      acc << "#{key}:#{properties[key]}"
     end.join(SEPERATOR)
   end
 

@@ -20,9 +20,11 @@ export default class extends Controller {
         let itemID = this.productItemTarget.dataset.itemId;
         let isLoggedIn = this.productItemTarget.dataset.isLoggedIn;
 
-        if(itemID && db.checkItemPresent(itemID) && isLoggedIn == 'true') {
-            this.addToCartIconTarget.disabled = true;
-        }
+        // if(itemID && db.checkItemPresent(itemID) && isLoggedIn == 'true') {
+        //     this.addToCartIconTarget.disabled = true;
+        // }
+
+        this.selectSizeTargets.forEach(target =>  target.checked = false)
     }
 
     addToCart(e) {
@@ -47,12 +49,13 @@ export default class extends Controller {
             return;
         }
 
-        this.buyNowSizeTarget.value = `${size}`;
+        // this.buyNowSizeTarget.value = `${size}`;
 
-        this.dispatch(
-            'updated',
-            { detail: { totalItems: result } }
-        );
+        // update the cart count in header
+        // this.dispatch(
+        //     'updated',
+        //     { detail: { totalItems: result } }
+        // );
 
 
         // try {
@@ -91,7 +94,7 @@ export default class extends Controller {
 
     setSize(e) {
         let size = e.target.value;
-        this.buyNowSizeTarget.value = size;
+        this.buyNowSizeTargets.forEach(target => { target.value = size });
 
         this.clearError();
     }
@@ -108,7 +111,26 @@ export default class extends Controller {
             e.preventDefault();
             this.attentionSizeError();
         }
+    }
 
+    validate(e) {
+        let itemID = this.buyNowItemIDTarget.value;
+        let size = this.buyNowSizeTarget.value;
+        let expectedFormState = e.target.dataset.state; // to see if the add to cart needs to be stopped
+        
+        let canSubmit = expectedFormState && expectedFormState != "disabled";
+        console.log(itemID, size);
+
+        // Imporve performance by handling the error message here instead of server call
+        if(itemID && size) {
+            this.buyNowSizeTarget.value = size;
+        } else {
+            e.preventDefault();
+
+            if(canSubmit) {
+                this.attentionSizeError();
+            }
+        }
     }
 
     attentionSizeError() {
