@@ -1,6 +1,6 @@
 <div class="checkout">
   <%= turbo_frame_tag 'guest-checkout-form' do %>
-    <%= simple_form_for form, url: checkouts_url, method: :post, defaults: { wrapper_html: { class: 'guest_info_form_wrapper'}} do |f| %>
+    <%= simple_form_for form, url: guest_checkouts_url, method: :post, defaults: { wrapper_html: { class: 'guest_info_form_wrapper'}} do |f| %>
       <section id="user_info" class="guest_checkout_info_section">
         <h3>Contact Info</h3>
         <%= f.input :email, required: true, error: f.full_error(:email) %>

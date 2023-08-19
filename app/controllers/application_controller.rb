@@ -51,12 +51,12 @@ class ApplicationController < ActionController::Base
 
   def not_found
     # raise ActionController::RoutingError.new('Not Found')
-    flash[:error] = 'Item sold out'
-    redirect_back(fallback_location: root_path) and return
+    flash[:error] = 'The thing you are looking for no longer exists'
+    redirect_back fallback_location: root_path
   end
 
   def handle_application_error(err)
     flash[:error] = err.message
-    redirect_back(fallback_location: root_path)
+    redirect_back fallback_location: root_path
   end
 end

@@ -13,9 +13,12 @@ module ApplicationHelper
     [["#{c.country_code}- #{c.alpha2}", c.country_code]]
   end
 
+  def guest_user
+    User.new(id: nil)
+  end
+
   def current_user
-    return User.new(id: nil) unless current_token.present? && current_token.valid?
-    return User.new(id: nil) unless current_token.resource_type == 'user'
+    raise ::Unauthorized unless current_token.present? && current_token.valid?
 
     @current_user ||= User.find_by!(id: current_token.resource_id)
   end

@@ -9,7 +9,7 @@ class CheckoutsController < ApplicationController
     redirect_to guest_order_carts_url(token: cart_token)
   end
 
-  def create
+  def guest_create
     @product_item = ProductItem.includes(:product).find_by!(id: order_item[:item_id])
     @product = @product_item.product
 
@@ -27,7 +27,7 @@ class CheckoutsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
             'guest-checkout-form',
-            partial: 'carts/form',
+            partial: 'carts/guest_form',
             locals: {
               form: @form,
               total_amount: @total_amount,
@@ -51,7 +51,7 @@ class CheckoutsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
             'guest-checkout-form',
-            partial: 'carts/form',
+            partial: 'carts/guest_form',
             locals: {
               form: @form,
               total_amount: @total_amount,
@@ -77,7 +77,7 @@ class CheckoutsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
             'guest-checkout-form',
-            partial: 'carts/form',
+            partial: 'carts/guest_form',
             locals: {
               form: @form,
               total_amount: @total_amount,

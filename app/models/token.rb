@@ -59,18 +59,19 @@ class Token < ApplicationRecord
       token = Token.find_by(hashed_token: HasherHelper.digest(access_token), revoked: false)
 
       return nil unless token.present?
-      return nil if token.expired? || token.hashed_refresh_token != refresh_token_hashed
+      return nil if token.expired? && token.hashed_refresh_token != refresh_token_hashed
       return nil if token.refresh_token_expired?
 
       if token.expired? && token.hashed_refresh_token == refresh_token_hashed # just to be safe
+        p 'regenerating token'
         access_token = Token.generate_token_for(field: 'hashed_token')
         token.hashed_token = HasherHelper.digest(access_token)
 
         token.expires_at = TokenConstants::LOGIN_USER_ACCESS_EXPIRY
         token.save
-      else
-        token.touch
       end
+
+      p 'token validate success'
 
       token.session_token = access_token
       token

@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       post :review
 
       post '/guest/buy', to: 'checkouts#guest_buy'
+      post '/guest', to: 'checkouts#guest_create'
     end
   end
 

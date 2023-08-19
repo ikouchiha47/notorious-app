@@ -38,7 +38,7 @@ class Cart < ApplicationRecord
     end
 
     def product_items_for_user(user_id, cart_token)
-      Cart.joins(:product_item).where(
+      Cart.joins(product_item: :product).where(
         cart_token:,
         cart_state: 'processing',
         user_id:

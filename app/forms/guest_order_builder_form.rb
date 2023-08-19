@@ -74,6 +74,8 @@ class GuestOrderBuilderForm
     @success = false
     return unless valid?
 
+    cart_id = "guest_#{ULID.generate}"
+
     ActiveRecord::Base.transaction do
       password = SecureRandom.hex(8)
       order_item = ProductItem.find(@item.item_id)
@@ -94,8 +96,6 @@ class GuestOrderBuilderForm
         zip_code:,
         alternate_number:
       )
-
-      cart_id = "guest_#{ULID.generate}"
 
       amount = @item.quantity * order_item.product.price
       p @item.quantity

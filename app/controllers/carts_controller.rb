@@ -3,6 +3,9 @@ class CartsController < ApplicationController
 
   before_action :logged_in?
   before_action :set_cart_error_and_success_vars
+  before_action :add_parent_crumb, only: %i[guest_order show]
+
+  after_action :add_end_crumb, only: %i[guest_order show]
 
   # For registered users
   # get user_id from session[:user].id
@@ -24,13 +27,7 @@ class CartsController < ApplicationController
 
     @show_payment = false
 
-    add_breadcrumb('Products', products_url)
     add_breadcrumb(@product.title, product_url(@product))
-    add_breadcrumb('Checkout', nil, true)
-  end
-
-  def my_order
-    current_cart
   end
 
   def show
@@ -40,6 +37,7 @@ class CartsController < ApplicationController
       return redirect_back(fallback_location: products_url), status: 200
     end
 
+    @pricing = Pricing.new(items_in_cart: cart_items)
     @form = MyOrderBuilderForm.new(cart_items)
   end
 
@@ -49,9 +47,6 @@ class CartsController < ApplicationController
     @cart_items_count = 0
 
     @cart = Cart.build_with_items(item_props:, item_id:)
-
-    add_breadcrumb('Products', products_url)
-    add_breadcrumb('Checkout', nil, true)
 
     if current_cart.present? && current_cart.find { |cart| cart.product_item_id == item_id }.present?
       p 'current item is already updated'
@@ -136,6 +131,7 @@ class CartsController < ApplicationController
 
   def guest_cart_items
     cart_token = session[:cart_token]
+
     raise ActiveRecord::RecordNotFound unless cart_token.present?
     raise ::Unauthorized unless cart_token == cart_token_in_params
     raise ActiveRecord::RecordNotFound unless session[cart_token].present?
@@ -155,5 +151,13 @@ class CartsController < ApplicationController
 
   def cart_token_in_params
     params.fetch(:token, '')
+  end
+
+  def add_parent_crumb
+    add_breadcrumb('Products', products_url)
+  end
+
+  def add_end_crumb
+    add_breadcrumb('Checkout', nil, true)
   end
 end
