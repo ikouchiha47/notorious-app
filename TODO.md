@@ -1,0 +1,6 @@
+- [ ] Payment gateway integration
+- [ ] For sold out item, display product details with button disabled
+- [ ] Disable the add to cart and buy now button once item successfully added
+    - https://stackoverflow.com/a/74360538
+- [x] Display something when item successfully added to cart
+- [ ] Fix the listing in new drops page

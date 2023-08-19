@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   before_action :set_breadcrumbs
 
-  before_action :print_seesion_tokens
+  # before_action :print_seesion_tokens
 
   rescue_from Unauthorized, with: :handle_application_error
   rescue_from Unprocessible, with: :handle_application_error
@@ -39,6 +39,11 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def set_cart_error_and_success_vars
+    @cart_error_msgs = []
+    @cart_success_msgs = []
+  end
 
   def set_breadcrumbs
     @breadcrumbs = ActiveSupport::OrderedHash.new

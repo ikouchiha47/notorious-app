@@ -1,4 +1,4 @@
-<% button_class ||= [] %>
+<% default_button_class =   %>
 
 <%= simple_form_for form, url: url, method: method, html: html_opts do |f| %>
   <%= f.input :item_id,
@@ -20,6 +20,6 @@
     %>
   <%= f.button :submit,
     "#{submit_button_text}",
-    class: (button_class << "product_details__cta_btn").join(" ")
+    button_opts
   %>
 <% end %>

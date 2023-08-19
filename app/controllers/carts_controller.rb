@@ -2,7 +2,7 @@ class CartsController < ApplicationController
   include ApplicationHelper
 
   before_action :logged_in?
-  before_action :validate_token, only: %i[show]
+  before_action :set_cart_error_and_success_vars
 
   # For registered users
   # get user_id from session[:user].id
@@ -29,32 +29,34 @@ class CartsController < ApplicationController
     add_breadcrumb('Checkout', nil, true)
   end
 
+  def my_order
+    current_cart
+  end
+
   def show
-    raise ActiveRecord::RecordNotFound unless cart_items.present?
+    # calling cart_items here sets the @cart_items to be in view
+    unless cart_items.present?
+      flash[:notice] = 'You cart is empty'
+      return redirect_back(fallback_location: products_url), status: 200
+    end
 
-    @cart_items = Cart
-                  .includes(:product_item)
-                  .joins(:product_item)
-                  .where(
-                    cart_token:,
-                    cart_state: 'processing',
-                    user_id: current_user.user_id
-                  )
-
-    @form = GuestOrderBuilderForm.new
+    @form = MyOrderBuilderForm.new(cart_items)
   end
 
   def update
     item_props = ItemProperties.new(place_order_params.slice(:size, :color, :quantity))
     item_id = place_order_params[:item_id]
-    cart_items_count = 0
+    @cart_items_count = 0
 
     @cart = Cart.build_with_items(item_props:, item_id:)
+
+    add_breadcrumb('Products', products_url)
+    add_breadcrumb('Checkout', nil, true)
 
     if current_cart.present? && current_cart.find { |cart| cart.product_item_id == item_id }.present?
       p 'current item is already updated'
 
-      @cart_error_msgs = ['Only allowed to buy one']
+      @cart_error_msgs << ['Only allowed to buy one']
 
       return respond_to do |format|
         format.html do
@@ -65,8 +67,8 @@ class CartsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
             'cart-errors',
-            partial: 'products/cart_error',
-            locals: { cart_error_msgs: @cart_error_msgs }
+            partial: 'products/cart_messages',
+            locals: { errors: @cart_error_msgs, success: [] }
           )
         end
       end
@@ -80,7 +82,7 @@ class CartsController < ApplicationController
       @cart.cart_token = existing_cart.cart_token
       @cart.cart_token_expires_at = existing_cart.cart_token_expires_at
 
-      cart_items_count = current_cart.count(1)
+      @cart_items_count = current_cart.count(1)
     else
       p 'building new cart'
       @cart.cart_id = Cart.build_id
@@ -93,15 +95,10 @@ class CartsController < ApplicationController
       p 'saving to cart'
 
       session[:cart_token] = @cart.cart_token
+      @cart_success_msgs << 'Added to cart'
 
       return respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.replace(
-            'cart-items-count',
-            partial: 'layouts/cart_items_count',
-            locals: { cart_items_count: cart_items_count + 1 }
-          )
-        end
+        format.turbo_stream
 
         format.html do
           flash.now[:success] = 'Item added to cart'
@@ -122,8 +119,8 @@ class CartsController < ApplicationController
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace(
           'cart-errors',
-          partial: 'products/cart_error',
-          locals: { cart_error_msgs: @cart_error_msgs }
+          partial: 'products/cart_messages',
+          locals: { errors: @cart_error_msgs, success: [] }
         )
       end
     end
@@ -147,7 +144,9 @@ class CartsController < ApplicationController
   end
 
   def cart_items
-    @cart_items ||= Cart.product_items_for_user(current_user.user_id)
+    raise ::Unauthorized unless session[:cart_token].present?
+
+    @cart_items ||= Cart.product_items_for_user(current_user.id, session[:cart_token])
   end
 
   def place_order_params

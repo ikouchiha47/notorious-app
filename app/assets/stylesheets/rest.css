@@ -17,23 +17,25 @@
   border-block: 2px solid black;
   align-items: center;
   padding: 1em var(--content-gutter);
-  background-color: var(--secondary_2);
+  background-color: var(--secondary_1);
 }
 
 .category_item a {
   font-family: 'sans';
   font-weight: 700;
   text-transform: uppercase;
+  text-decoration: none;
+  color: black;
 
-  color: hsl(0 0% var(--l, 50%));
+  transition: text-decoration 250ms forwards;
 }
 
 .category_item.active a {
-  --l: 0%;
+  text-decoration: underline;
 }
 
 .category_item a:hover {
-  --l: 20%;
+  text-decoration: underline;
 }
 
 
@@ -157,7 +159,7 @@
 
 
 /* cart items error start */
-#cart-errors {
+.cart-messages {
   align-items: flex-start
 }
 
@@ -170,6 +172,18 @@
 
 .cart-error-msg::before {
   content: "x";
+  margin-right: 10px;
+}
+
+.cart-success-msg {
+  margin-inline: 2em;
+  margin-top: 2em;
+  color: green;
+  font-weight: bold;
+}
+
+.cart-success-msg::before {
+  content: '\2713';
   margin-right: 10px;
 }
 

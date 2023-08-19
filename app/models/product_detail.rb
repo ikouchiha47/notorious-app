@@ -6,7 +6,7 @@ class ProductDetail
 
   def initialize(product_id, product = nil)
     @product_id = product_id
-    @product = product.nil? ? build_product : product
+    @product = product.nil? ? build_product(product_id) : product
   end
 
   def get
@@ -62,10 +62,10 @@ class ProductDetail
 
   private
 
-  def build_product
+  def build_product(product_id)
     Product
       .includes(:product_item, :category)
-      .where(products: { id: @product_id })
+      .where(products: { id: product_id })
       .first
   end
 

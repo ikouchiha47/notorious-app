@@ -68,24 +68,25 @@
                         product_details: @product_details,
                         submit_button_text: 'Buy Now',
                         html_opts: { data: { action: 'submit->cart-add#directBuy'} },
+                        button_opts: { class: 'product_details__cta_btn', data: {'cart-add-target': 'buyNowBtn'} }
                     } %>
 
                     <% if logged_in? %>
-                        <% button_class =  %>
+                        <% btn_class = ["product_details__cta_btn add-to-cart-btn", buttton_class_for_add_to_cart(@product_details[:item_id])].join(' ') %>
                         <%= render partial: "products/form", locals: {
                             form: @user_form,
                             url: new_cart_url,
                             method: :patch,
                             product_details: @product_details,
                             submit_button_text: 'Add to Cart',
-                            html_opts: {data: { action: 'submit->cart-add#validate', state: buttton_class_for_add_to_cart(@product_details[:item_id]) }},
-                            button_class: ["add-to-cart-btn", "#{buttton_class_for_add_to_cart(@product_details[:item_id])}"]
-                            } %>
+                            html_opts: { data: { action: 'submit->cart-add#validate', state: buttton_class_for_add_to_cart(@product_details[:item_id]) } },
+                            button_opts: { class: btn_class, id: 'add-to-cart', data: { 'cart-add-target': 'addToCart' } }
+                        } %>
                     <% end %>
                 </div>
             </section>
 
-            <%= render partial: "products/cart_error", locals: { cart_error_msgs: @cart_error_msgs || [] } %>
+            <%= render partial: "products/cart_messages", locals: { errors: @cart_error_msgs, success: @cart_success_msgs } %>
             
         </div>
 </div>

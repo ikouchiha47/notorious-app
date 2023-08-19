@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
   before_action :add_products_crumb, only: %i[show index]
+  before_action :set_cart_error_and_success_vars, only: :show
 
   def index
     @categories = Category.all

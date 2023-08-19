@@ -209,6 +209,11 @@ a.clean-anchor:visited {
   border-block: 1px solid var(--black);
 }
 
+.font-xs {
+    font-size: 8px;
+
+}
+
 textarea {
     resize: var(--resize-dir, vertical);
 }

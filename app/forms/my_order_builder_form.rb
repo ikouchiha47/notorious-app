@@ -1,19 +1,12 @@
-class RegisteredOrderBuilderForm
+class MyOrderBuilderForm
   include ActiveModel::Model
 
-  attr_accessor (
-    :success,
-    :items,
-    :address_id,
-    :user
-  )
+  attr_accessor :success, :items, :address_id, :user
 
-  valdiates :address_id, presence: true
+  validates :address_id, presence: true
   validate :all_items_valid?
 
-  def initialize(attributes = {})
-    super
-  end
+  def initialize(attributes = {}); end
 
   def items_attributes=(items_params)
     @items ||= []
@@ -22,14 +15,14 @@ class RegisteredOrderBuilderForm
     end
   end
 
-
   private
 
   def all_items_valid?
     items.each do |item|
       next if item.valid?
+
       item.errors.full_messages.each do |full_message|
-        self.errors.add(:base, "Product was invalid: #{full_message}")
+        errors.add(:base, "Product was invalid: #{full_message}")
       end
     end
 

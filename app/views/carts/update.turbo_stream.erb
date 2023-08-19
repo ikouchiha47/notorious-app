@@ -1,0 +1,7 @@
+<%= turbo_stream.replace 'cart-items-count' do %>
+  <%= render partial: 'layouts/cart_items_count', locals: { cart_items_count: @cart_items_count + 1 } %>
+<% end %>
+
+<%= turbo_stream.replace 'cart-success' do %>
+  <%= render partial: 'products/cart_messages', locals: { errors: [], success: @cart_success_msgs } %>
+<% end %>

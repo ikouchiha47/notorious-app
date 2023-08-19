@@ -1,4 +1,9 @@
-<% if cart_items_count > 0 %>
-  <span id="cart-items-count"><%= cart_items_count %></span>
-<% end %>
-
+<div id="cart-items-count">
+  <span>
+    <% if cart_items_count > 0 %>
+      <span class="cart-items-count-text"><%= cart_items_count %></span>
+    <% end %>
+  </span>
+  <% cart_review_url = cart_items_count.zero? ? "#" : my_review_carts_url %>
+  <%= link_to 'Cart', cart_review_url,  { class: 'header-nav' }  %>
+</div>

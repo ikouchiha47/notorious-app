@@ -1,6 +1,6 @@
 /* header section start */
 
-#cart-items-count {
+.cart-items-count-text {
   display: inline-block;
   background-color: var(--orange);
   border-radius: 50%;

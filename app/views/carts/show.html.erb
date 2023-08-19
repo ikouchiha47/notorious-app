@@ -1,2 +1,32 @@
-<p style="color: green"><%= notice %></p>
+<header id="guest-shopping-info-header" class="page-title line-top">
+    <h3 class="pi-content-gutter" style="--pi-block-gap: 0">Review order (<%= @cart_items.count %>)</h3>
+</header>
 
+<div class="checkout_wrapper">
+    <div class="shopping_info">
+        <section id="guest-shopping-list">
+            <% @cart_items.each do |cart_item| %> 
+              <%= render partial: 'carts/cart_item', locals: { product_item: cart_item.product_item, product: cart_item.product_item.product } %>
+            <% end %>
+
+            <div class="total-cart-amount">
+                <span>Total</span>
+                <span>
+                    <%# <%= format_price(@total_amount + @shipping) %> %>
+                </span>
+            </div>
+
+            <div id="guest-delivery-faq">
+                <p>
+                It takes 7 days for the item to delivered by our service providers.
+                You can return the product to us personally if you don't like it.
+                </p>
+
+                <p>
+                Please reach out to us, and we will schedule a pickup.
+                </p>
+            </div>
+        </section>
+    </div>
+
+</div>

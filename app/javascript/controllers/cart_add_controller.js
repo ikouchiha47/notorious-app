@@ -103,8 +103,6 @@ export default class extends Controller {
         let itemID = this.buyNowItemIDTarget.value;
         let size = this.buyNowSizeTarget.value;
 
-        console.log(itemID, size);
-
         if(itemID && size) {
             this.buyNowSizeTarget.value = size;
         } else {
@@ -119,7 +117,6 @@ export default class extends Controller {
         let expectedFormState = e.target.dataset.state; // to see if the add to cart needs to be stopped
         
         let canSubmit = expectedFormState && expectedFormState != "disabled";
-        console.log(itemID, size);
 
         // Imporve performance by handling the error message here instead of server call
         if(itemID && size) {

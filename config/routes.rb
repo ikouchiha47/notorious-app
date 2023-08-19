@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :carts do
     collection do
       get '/guest/:token', to: 'carts#guest_order', as: 'guest_order'
+      get '/my/review', to: 'carts#show'
     end
   end
 

@@ -1,28 +1,24 @@
-<header class="nav-header">
+<header class="nav-header" data-controller="header-nav">
   <div id="app-logo">
     <%= link_to 'mr.notorious', root_path, { class: "clean-anchor" } %>
   </div>
 
-  <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false">
-    <span class="material-symbols-outlined nav-toggle-icon show" id="menu">menu</span>
-    <span class="material-symbols-outlined nav-toggle-icon" id="close">close</span>
+  <button class="nav-toggle" aria-controls="primary-nav" data-header-nav-target="menuToggler" data-action="header-nav#toggleSlideMenuCtrl" aria-expanded="false">
+    <span class="material-symbols-outlined nav-toggle-icon show" id="menu" data-header-nav-target="hamOpen">menu</span>
+    <span class="material-symbols-outlined nav-toggle-icon" id="close" data-header-nav-target="hamClose">close</span>
     <span class="sr-only">Menu</span>
   </button>
 
   <nav class="nav-options">
-    <ul id="primary-nav" data-state="close">
+    <ul id="primary-nav" data-state="close" data-header-nav-target="slideMenu">
       <% if logged_in? %>
-        <li 
-          data-action="cart-add:updated@window->cart-count#update"
-          data-controller="cart-count"
-        >
+        <li>
         <span aria-hidden="true" class="material-symbols-outlined">
           shopping_cart
         </span>
-        <div>
-          <%= render partial: 'layouts/cart_items_count', locals: {cart_items_count:} %>
-          <span data-cart-count-target="itemCount" class="header-nav">Cart</span>
-        </div>
+
+        <%= render partial: 'layouts/cart_items_count', locals: {cart_items_count:} %>
+        
         </li>
         <li>
           <span aria-hidden="true" class="material-symbols-outlined">

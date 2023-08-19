@@ -5,6 +5,13 @@ class Cart < ApplicationRecord
   validates :cart_token, :cart_token_expires_at, presence: true
   validates :quantity, numericality: { in: 1..5 }
 
+  # has_many :product_items,
+  #          foreign_key: 'id',
+  #          class_name: 'ProductItem',
+  #          primary_key: 'product_item_id'
+  #
+  # since the cart is denormalized, meaning same cart_token is used for multiple items in cart
+  # each cart entry will be related to only one product item
   has_one :product_item,
           foreign_key: 'id',
           class_name: 'ProductItem',
@@ -30,12 +37,12 @@ class Cart < ApplicationRecord
       )
     end
 
-    def product_items_for_user(user_id)
-      Cart.joins(:product_items).where(
+    def product_items_for_user(user_id, cart_token)
+      Cart.joins(:product_item).where(
         cart_token:,
         cart_state: 'processing',
         user_id:
-      ).where('cart.product_item_id = product_items.id')
+      ).where('carts.product_item_id = product_items.id')
     end
   end
 end

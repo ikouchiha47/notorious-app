@@ -104,6 +104,7 @@ def build_items
       "colors": %w[blue black green]
     }
   }
+
   3.times do |i|
     create_each(products[i], over_tshirt)
   end
