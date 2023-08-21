@@ -29,4 +29,12 @@
         </section>
     </div>
 
+    <%= render partial: "carts/my_order_form", locals: { 
+        form: @form, 
+        order_form: @order_form,
+        addresses: @addresses,
+        total_amount: @pricing.order_full,
+        shipping: @pricing.shipping,
+        show_payment: @show_payment, 
+        order_token: nil } %>
 </div>

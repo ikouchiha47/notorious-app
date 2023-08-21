@@ -20,30 +20,30 @@ class CheckoutsController < ApplicationController
     @shipping = 0
     @total_amount = @product.price.to_i * order_item[:quantity].to_i
 
-    @form = GuestOrderBuilderForm.new(*guest_order_builder_form)
+    begin
+      @form = GuestOrderBuilderForm.new(*guest_order_builder_form)
 
-    unless @form.valid?
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.replace(
-            'guest-checkout-form',
-            partial: 'carts/guest_form',
-            locals: {
-              form: @form,
-              total_amount: @total_amount,
-              shipping: @shipping,
-              outofstock: @outofstock,
-              show_payment: false,
-              order_token: nil
-            }
-          )
+      unless @form.valid?
+        respond_to do |format|
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.replace(
+              'guest-checkout-form',
+              partial: 'carts/guest_form',
+              locals: {
+                form: @form,
+                total_amount: @total_amount,
+                shipping: @shipping,
+                outofstock: @outofstock,
+                show_payment: false,
+                order_token: nil
+              }
+            )
+          end
         end
+
+        return
       end
 
-      return
-    end
-
-    begin
       @form.save!
       @success = true
 
@@ -112,15 +112,17 @@ class CheckoutsController < ApplicationController
     guest_order_builder_form[:order_item_builder]
   end
 
+  def address_item
+    guest_order_builder_form[:address_form_builder]
+  end
+
   def guest_order_builder_form
     params.require(:guest_order_builder_form).permit(
       :email,
-      :address_line_a,
-      :address_line_b,
-      :zip_code,
       :phone_country_code,
       :phone_number,
-      order_item_builder: %i[item_id size quantity]
+      order_item_builder: %i[item_id size quantity],
+      address_form_builder: %i[address_line_a address_line_b zip_code]
     )
   end
 end

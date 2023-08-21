@@ -1,35 +1,39 @@
 <div class="checkout">
   <%= turbo_frame_tag 'guest-checkout-form' do %>
-    <%= simple_form_for form, url: guest_checkouts_url, method: :post, defaults: { wrapper_html: { class: 'guest_info_form_wrapper'}} do |f| %>
+    <%= simple_form_for form, url: guest_checkouts_url, method: :post, defaults: {wrapper_html: { class: 'guest_info_form_wrapper'}} do |f| %>
       <section id="user_info" class="guest_checkout_info_section">
         <h3>Contact Info</h3>
-        <%= f.input :email, required: true, error: f.full_error(:email) %>
+        <%= f.input :email, required: true %>
       </section>
 
-      <section id="shipping_info" class="guest_checkout_info_section">
-        <h3>Shipping Details</h3>
-        <p>
-        <%= f.input :address_line_a, as: :text, required: true, error: f.full_error(:address_line_a) %>
-        </p>
-        <%= f.input :address_line_b, as: :text %>
-        <%= f.input :zip_code, required: true, error: f.full_error(:zip_code) %>
-        <div class="phone_number_wrapper guest_info_form_wrapper">
-          <label class="phone required"> 
-            <abbr title="required">*</abbr>
-            Phone
-          </label>
-          <%= f.select :phone_country_code, country_code_list, required: true %>
-          <%= f.input :phone_number, as: :integer, required: true, label: false, wrapper_html: {
-            id: 'guest-phone-number',
-            class: 'input integer required guest_order_builder_form_phone_number' }
-          %>
-        </div>
-      </section>
+      <!-- failing here -->
+      <%= f.simple_fields_for form.address_form_builder, defaults: {wrapper_html: {class: ''}} do |ff| %>
+        <section id="shipping_info" class="guest_checkout_info_section">
+          <h3>Shipping Details</h3>
+          <p>
+          <%= ff.input :address_line_a, as: :text, required: true, wrapper_html: { class: 'guest_info_form_wrapper' } %>
+          </p>
+          <%= ff.input :address_line_b, as: :text, wrapper_html: { class: 'guest_info_form_wrapper' } %>
+          <%= ff.input :zip_code, required: true, wrapper_html: { class: 'guest_info_form_wrapper' } %>
+          <div class="phone_number_wrapper guest_info_form_wrapper">
+            <label class="phone required"> 
+              <abbr title="required">*</abbr>
+              Phone
+            </label>
+            <%= f.select :phone_country_code, country_code_list, required: true %>
+            <%= f.input :phone_number, as: :integer, required: true, label: false, wrapper_html: {
+              id: 'guest-phone-number',
+              class: 'input integer required guest_order_builder_form_phone_number' }
+            %>
+          </div>
+        </section>
+      <% end %>
+      <!-- failing here -->
 
-      <%= f.simple_fields_for form.item, defaults: {wrapper_html: {class: ''}} do |ff| %>
-        <%= ff.input :item_id, as: :hidden %>
-        <%= ff.input :size, as: :hidden %>
-        <%= ff.input :quantity, as: :hidden %>
+      <%= f.simple_fields_for form.order_item_builder, defaults: {wrapper_html: {class: ''}} do |ff| %>
+        <%= ff.input :item_id, as: :hidden, wrapper_html: { class: 'guest_info_form_wrapper' } %>
+        <%= ff.input :size, as: :hidden, wrapper_html: { class: 'guest_info_form_wrapper' } %>
+        <%= ff.input :quantity, as: :hidden, wrapper_html: { class: 'guest_info_form_wrapper' } %>
       <% end %>
 
       <section class="guest_checkout_info_section" id="payment_info">

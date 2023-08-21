@@ -19,6 +19,7 @@ class CartsController < ApplicationController
     @product = @product_item.product
     @form = GuestOrderBuilderForm.new
     @form.order_item_builder = guest_cart_items.slice(:item_id, :size, :quantity)
+    @form.address_form_builder = {}
 
     @shipping = 0
     @discount = 0
@@ -37,8 +38,11 @@ class CartsController < ApplicationController
       return redirect_back(fallback_location: products_url), status: 200
     end
 
+    @addresses = Address.viewable(current_user.id)
     @pricing = Pricing.new(items_in_cart: cart_items)
-    @form = MyOrderBuilderForm.new(cart_items)
+    @form = AddressFormBuilder.new
+    @show_payment = false
+    @order_form = MyOrderBuilderForm.new
   end
 
   def update

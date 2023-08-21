@@ -1,0 +1,53 @@
+<div class="checkout flex flex-col" style="--gap: 2em" data-controller="address">
+  <section id="shipping_info" class="guest_checkout_info_section">
+    <h3>Shipping Details</h3>
+
+    <%= link_to "Add address", '#', { class: "clean-anchor", data: { action: 'click->address#toggleForm' }} %>
+    <%= render partial: 'addresses/form', locals: { form: form } %>
+
+    <% if addresses.length > 0 %>
+      <div id="addresses-wrapper">
+        <% addresses.each do |address| %>
+          <%= render partial: 'addresses/address', locals: { address: address } %>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+
+  <section class="guest_checkout_info_section" id="payment_info">
+    <h3>Billing Details</h3>
+    <div class="flex flex-row space-between">
+      <span class="inline-block">Total:</span>
+      <span class="inline-block">
+        <%= format_price total_amount %>
+      </span>
+    </div>
+    <div class="flex flex-row space-between">
+      <span class="inline-block">Shipping: </span>
+      <span class="inline-block">0</span>
+    </div>
+    <div class="flex flex-row space-between checkout-total">
+      <span class="inline-block bold">Total </span>
+      <span class="inline-block bold">
+        <%= format_price(total_amount) %>
+      </span>
+    </div>
+  </section>
+
+  <section id="pay-me-now">
+    <% if show_payment.present? %>
+      <%= render partial: "carts/pay", locals: { order_token: order_token } %>
+    <% else %>
+      <%= simple_form_for order_form, url: place_my_order_checkouts_url, method: :post, html: { class: 'hidden-form' } do |f| %>
+        <%= f.input :address_id, as: :hidden, required: true, input_html: {data: { 'address-target': 'buyAddressID' }} %>
+        <%= f.submit "Place Order", class: 'btn place_order_btn_lg' %>
+      <% end %>
+    <% end %>
+
+    <% if @guest_order_error.present? %>
+      <span class="form-inline-error" style="font-size: 0.9em"><%= @guest_order_error %></span>
+    <% end %>
+  </section>
+
+  
+</div>

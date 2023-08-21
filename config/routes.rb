@@ -27,12 +27,20 @@ Rails.application.routes.draw do
 
   resources :checkouts do
     collection do
-      post :review
-
       post '/guest/buy', to: 'checkouts#guest_buy'
       post '/guest', to: 'checkouts#guest_create'
+
+      post '/me/buy', to: 'checkouts#create', as: 'place_my_order'
     end
   end
+
+  get '/me/addresses', to: 'addresses#index', as: 'addresses'
+  get '/me/addresses/:id', to: 'address#edit', as: 'edit_address'
+
+  # this is an idempotent route, if its update the params[:id] is present?
+  # else its a new address for the current_user
+  patch '/me/addresses', to: 'addresses#update', as: 'add_address'
+  delete '/me/addresses/:id', to: 'addresses#delete', as: 'delete_address'
 
   match '*unmatched', to: 'application#not_found_method', via: :all
 end

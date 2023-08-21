@@ -1,0 +1,9 @@
+<%= turbo_stream.replace 'address-form' do %>
+  <%= render partial: 'addresses/form', locals: { form: AddressFormBuilder.new } %>
+<% end %>
+
+<% if @address.present? %>
+  <%= turbo_stream.prepend 'addresses-wrapper' do %>
+    <%= render partial: 'addresses/address', locals: { address: @address } %>
+  <% end %>
+<% end %>

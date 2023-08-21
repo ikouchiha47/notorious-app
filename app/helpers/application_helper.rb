@@ -41,4 +41,13 @@ module ApplicationHelper
     flash[type] ||= []
     flash[type].concat texts
   end
+
+  def simple_mask(value, unmask_len = 4)
+    return value unless value.present? || value.length < unmask_len
+
+    unmasked = value.slice(0, unmask_len)
+    masked = 'X' * (value.length - unmask_len)
+
+    "#{unmasked}#{masked}"
+  end
 end

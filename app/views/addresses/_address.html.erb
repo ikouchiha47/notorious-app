@@ -1,0 +1,19 @@
+<section id='<%= "#{dom_id(address)}_details"%>' data-addr="<%= address.id %>" data-address-target="addressItem" data-action='click->address#selectAddress' class="address-container flex flex-col">
+  <h4><%= address.tag %></h4>
+  <div class="address-details-line-a flex flex-row">
+    <%= address.address_line_a %>
+  </div>
+  <div class="address-details-zip code flex flex-row">
+    <span class="zip-code-label">Zip Code</span>
+    <%= address.zip_code %>
+    </span>
+  </div>
+  <span class="address-details-phone">
+    <%= simple_mask(address.alternate_number, 5) %>
+  </span>
+
+  <div class="address-actions flex flex-row space-between" id='<%= dom_id(address) %>'>
+    <%= link_to "Edit", edit_address_path(address) %>
+    <%= button_to "Delete", delete_address_path(address), method: :delete, data: { confirm: 'Are you sure?', disable_with: 'loading...' } %>
+  </div>
+</section>

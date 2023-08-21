@@ -179,7 +179,6 @@ a.clean-anchor:visited {
 
 .btn-pay {
     background-color: var(--yellow);
-
 }
 
 .btn {
@@ -211,7 +210,18 @@ a.clean-anchor:visited {
 
 .font-xs {
     font-size: 8px;
+}
 
+.show {
+    height: 100%;
+    clip-path: polygon(0 100%, 100% 100%, 100% 0, 0 0);
+    transition: all 250ms ease-in;
+}
+
+.hide {
+    height: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    transition: all 250ms ease-in;
 }
 
 textarea {

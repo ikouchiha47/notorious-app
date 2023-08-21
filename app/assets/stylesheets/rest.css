@@ -193,3 +193,28 @@
   }
 }
 /* cart items error end */
+
+/* address wrapper start */
+#addresses-wrapper {
+  display: flex;
+  gap: 2em;
+  overflow-x: scroll;
+  padding-bottom: 1em;
+}
+
+.address-container {
+  --gap: 1em;
+  border: 1px solid black;
+  padding: 1em;
+  cursor: pointer;
+}
+
+.address-container.selected {
+  background-color: var(--blue);
+  color: white;
+}
+
+.address-container.selected .address-actions a {
+  color: white;
+}
+/* address wrapper end */

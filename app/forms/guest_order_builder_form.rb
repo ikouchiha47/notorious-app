@@ -1,46 +1,21 @@
-class GuestOrderBuilderForm
-  include ActiveModel::Model
-  include ActiveModel::Serialization
-
+class GuestOrderBuilderForm < ApplicationForm
   attr_accessor :success,
-                :email,
-                :item,
-                :address_line_a,
-                :address_line_b,
-                :zip_code,
-                :phone_country_code,
-                :phone_number,
-                :alternate_phone_number
+                :email
 
-  attr_reader :order
+  attr_reader :order, :phone_number, :phone_country_code, :address_form_builder, :order_item_builder
 
   validates :email,
             :phone_country_code,
             :phone_number,
-            :zip_code,
-            :item,
-            :address_line_a, presence: true
-
-  validates :zip_code, numericality: {
-    only_integer: true,
-    greater_than_or_equal_to: 10_000,
-    less_than_or_equal_to: 9_999_999_999
-  }
-
-  validates :phone_country_code, numericality: {
-    only_integer: true,
-    greater_than_or_equal_to: 1,
-    less_than_or_equal_to: 999
-  }
+            :order_item_builder,
+            :address_form_builder, presence: true
 
   validates :phone_number, length: { in: 6..20 }
-
   validates :email, email_format: true
 
-  def int?(string)
-    return true if string.is_a? Numeric
-
-    string.scan(/\D/).empty?
+  validate do
+    validates_associated(order_item_builder)
+    validates_associated(address_form_builder)
   end
 
   def phone_number=(value)
@@ -56,19 +31,25 @@ class GuestOrderBuilderForm
   end
 
   def order_item_builder=(attrs = {})
-    @item ||= OrderItemBuilder.new(attrs)
+    @order_item_builder ||= OrderItemBuilder.new(attrs)
   end
 
-  def alternate_number
-    return alternate_phone_number if alternate_phone_number.present?
-
-    "+#{phone_country_code}-#{phone_number}"
+  def address_form_builder=(attrs = {})
+    @address_form_builder ||= AddressFormBuilder.new(attrs)
   end
 
   # we are here meaning the user existence is validated
   # here the password will be generate for first time users
   # we also need to validate and save the address
   # we need to create an order with a random cart_id prefixed with guest_{cart_id}
+
+  def aggregate_errors(nested_form)
+    nested_form.valid?
+    #
+    # nested_form.errors.each do |attribute, message|
+    #   errors.add(attribute, message)
+    # end
+  end
 
   def save!
     @success = false
@@ -78,7 +59,8 @@ class GuestOrderBuilderForm
 
     ActiveRecord::Base.transaction do
       password = SecureRandom.hex(8)
-      order_item = ProductItem.find(@item.item_id)
+      # check for quantity
+      order_item = ProductItem.find(@order_item_builder.item_id)
 
       user = User.create!(
         email:,
@@ -89,17 +71,20 @@ class GuestOrderBuilderForm
         verified: false
       )
 
+      @address_form_builder.country_code = phone_country_code
+      @address_form_builder.alternate_phone_number = phone_number
+
       address = Address.create!(
         user_id: user.id,
-        address_line_a:,
-        address_line_b:,
-        zip_code:,
-        alternate_number:
+        address_line_a: @address_form_builder.address_line_a,
+        address_line_b: @address_form_builder.address_line_b,
+        zip_code: @address_form_builder.zip_code,
+        alternate_number: @address_form_builder.alternate_number
       )
 
-      amount = @item.quantity * order_item.product.price
-      p @item.quantity
-      p order_item.product.price
+      amount = @order_item_builder.quantity * order_item.product.price
+      # p @item.quantity
+      # p order_item.product.price
 
       @order = Order.create!({
                                cart_id:,
@@ -108,11 +93,12 @@ class GuestOrderBuilderForm
                                amount:,
                                payment_status: 'pending',
                                order_status: 'pending',
-                               alternate_number:,
+                               alternate_number: @address_form_builder.alternate_number,
                                order_token: SecureRandom.hex(16),
                                order_token_expires_at: 2.days.since.utc
                              })
 
+      ## TODO: reduce the item quantity in Product
       order_item.update!(quantity: order_item.quantity - 1)
       @success = true
     end
