@@ -20,43 +20,9 @@
   </header>
   <div class="items-wrapper">
     <ul class="product-items-listing">
-      <li>
-        <img src='<%= image_url("mockups/chemical_x_black_flat.png") %>'/>
-        <span>chemical x</span>
-      </li>
-      <li>
-        <img src='<%= image_url("mockups/chemical_x_black_man.png") %>'/>
-        <span>chemical x</span>
-      </li>
-
-      <li>
-        <img src='<%= image_url("mockups/chemical_x_black_flat.png") %>'/>
-        <span>pizza senses</span>
-      </li>
-      <li>
-        <img src='<%= image_url("mockups/chemical_x_white_man.png") %>'/>
-        <span>pizza senses are tingling</span>
-      </li>
-
-      <li>
-        <img src='<%= image_url("mockups/chemical_x_black_flat.png") %>'/>
-        <span>chemical x</span>
-      </li>
-
-      <li>
-        <img src='<%= image_url("mockups/chemical_x_white_flat.png") %>'/>
-        <span>chemical x</span>
-      </li>
-
-      <li>
-        <img src='<%= image_url("mockups/chemical_x_black_man.png") %>'/>
-        <span>chemical x</span>
-      </li>
-
-      <li>
-        <img src='<%= image_url("mockups/chemical_x_white_man.png") %>'/>
-        <span>brains in the family</span>
-      </li>
+      <% @products.each do |product| %>
+          <%= render product  %>
+        <% end  %>
     </ul>
   </div>
 </section>

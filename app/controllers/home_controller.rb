@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   include MomentHelper
 
   def index
-    @featured = Product.featured
+    @products = Product.featured
   end
 
   def peppermint_spray
@@ -15,9 +15,8 @@ class HomeController < ApplicationController
     last_modified = Time.at(0).utc
     last_modified_from_client = request.headers['If-Modified-Since']
 
-
     if last_modified_from_client.present?
-      value = str_to_date(last_modified_from_client) 
+      value = str_to_date(last_modified_from_client)
 
       if value <= 1.month.ago.utc
         head :not_modified
@@ -43,5 +42,4 @@ class HomeController < ApplicationController
       format.js { render 'home/peppermint.js.erb', content_type: 'application/javascript' }
     end
   end
- 
 end
