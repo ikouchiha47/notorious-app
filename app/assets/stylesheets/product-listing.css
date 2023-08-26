@@ -41,6 +41,7 @@
 
 .product-items-listing li:hover {
     transform: scale(1.2);
+    z-index: 100;
 }
 
 .product-items-listing span {

@@ -1,0 +1,6 @@
+<%= turbo_stream.replace 'cart-items-count' do %>
+  <%= render partial: 'layouts/cart_items_count', locals: { cart_items_count: @cart_items_count - 1 } %>
+<% end %>
+
+
+<%= turbo_stream.remove "product_item_#{@item_id}" %>

@@ -37,10 +37,7 @@
         shipping: @pricing.shipping,
         show_payment: @show_payment,
         cart_items: @cart_items,
+        errors: @order_errors || [],
         order_token: nil } %>
 
-    <%= render partial: 'carts/order_error', locals: {
-        order_form: @order_form,
-        errors: @order_errors || []
-    } %>
 </div>

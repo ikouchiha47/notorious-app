@@ -1,7 +1,8 @@
-<div class="cart-item">
+<div class="cart-item" id='<%= dom_id(product_item) %>'>
   <div class="cart-image-wrapper">
     <%= image_tag product_item.product.promoted_image %>
   </div>
-  <span class="inline-block font-xs"><%= product.title %></span>
+  <span class="inline-block cart-item-prod-title font-xs"><%= product.title %></span>
   <span class="inline-block"><%= format_price product.price %></span>
+  <%= button_to "x", remove_from_cart_url(product_item.id), method: :delete, class: 'btn-cart-item-delete' %>
 </div>

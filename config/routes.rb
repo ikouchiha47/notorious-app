@@ -16,7 +16,10 @@ Rails.application.routes.draw do
   resources :categories, only: %i[index]
   resources :products, only: %i[show index]
 
-  resources :carts, except: [:new]
+  resources :carts, except: %i[new delete] do
+  end
+
+  delete '/carts/remove/:id', to: 'carts#remove', as: 'remove_from_cart'
 
   resources :carts do
     collection do
@@ -30,6 +33,7 @@ Rails.application.routes.draw do
       post '/guest/buy', to: 'checkouts#guest_buy'
       post '/guest', to: 'checkouts#guest_create'
 
+      post '/direct_buy', to: 'checkouts#direct_buy'
       post '/me/buy', to: 'checkouts#create', as: 'place_my_order'
     end
   end

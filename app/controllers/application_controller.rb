@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   rescue_from Unauthorized, with: :handle_application_error
   rescue_from Unprocessible, with: :handle_application_error
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
-  rescue_from StandardError, with: :handle_application_error # need to change this
+  rescue_from StandardError, with: :handle_standard_error
 
   helper_method :breadcrumbs, :cart_items_count
 
@@ -62,6 +62,13 @@ class ApplicationController < ActionController::Base
     purge_tokens
 
     redirect_to root_path
+  end
+
+  def handle_standard_error(err)
+    p err
+    flash[:error] = err.message
+
+    redirect_to products_url
   end
 
   def purge_tokens

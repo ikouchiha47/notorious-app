@@ -1,4 +1,9 @@
   <div class="checkout flex flex-col" style="--gap: 2em" data-controller="address">
+    <%= render partial: 'carts/order_error', locals: {
+        order_form: order_form,
+        errors: errors
+    } %>
+
     <section id="shipping_info" class="guest_checkout_info_section">
       <h3>Shipping Details</h3>
 

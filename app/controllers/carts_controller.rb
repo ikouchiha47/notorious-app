@@ -37,7 +37,7 @@ class CartsController < ApplicationController
       flash[:notice] = 'You cart is empty'
       session.delete(:cart_token)
 
-      return redirect_to products_url, status: 200
+      return redirect_to products_url
     end
 
     @addresses = Address.viewable(current_user.id)
@@ -54,7 +54,7 @@ class CartsController < ApplicationController
 
     @cart = Cart.build_with_items(item_props:, item_id:)
 
-    if current_cart.present? && current_cart.find { |cart| cart.product_item_id == item_id }.present?
+    if item_in_cart?(item_id)
       p 'current item is already updated'
 
       @cart_error_msgs << ['Only allowed to buy one']
@@ -80,6 +80,7 @@ class CartsController < ApplicationController
       existing_cart = current_cart.first
 
       @cart.cart_id = existing_cart.cart_id
+      # @cart.cart_id = Cart.build_id
       @cart.cart_token = existing_cart.cart_token
       @cart.cart_token_expires_at = existing_cart.cart_token_expires_at
 
@@ -127,9 +128,32 @@ class CartsController < ApplicationController
     end
   end
 
-  def destroy; end
+  def remove
+    item_id = params[:id]
+    nil unless item_in_cart?(item_id)
+
+    @cart_items_count = current_cart.count
+    cart_item = current_cart.find { |cart| cart.product_item_id == item_id }
+
+    Cart.where(cart_id: cart_item.id, product_item_id: item_id).delete_all
+
+    p @cart_items_count
+    if @cart_items_count < 2
+      flash[:success] = 'All items removed from cart'
+      return redirect_to products_url
+    end
+
+    @item_id = item_id
+
+    flash[:success] = 'Item removed from cart'
+    redirect_to my_review_carts_url
+  end
 
   private
+
+  def item_in_cart?(item_id)
+    current_cart.present? && current_cart.find { |cart| cart.product_item_id == item_id }.present?
+  end
 
   def validate_token
     raise ::Unauthorized unless current_cart&.first&.cart_token == params[:token]

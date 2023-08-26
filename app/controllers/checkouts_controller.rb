@@ -1,4 +1,6 @@
 class CheckoutsController < ApplicationController
+  before_action :logged_in?, only: %i[create direct_buy]
+
   def create
     unless current_cart.present?
       sesstion.delete(:cart_token)
@@ -62,12 +64,68 @@ class CheckoutsController < ApplicationController
     end
   end
 
+  def direct_buy
+    order = OrderItemBuilder.new(guest_buy_params)
+    raise Unprocessible unless order.valid?
+
+    item_props = ItemProperties.new(guest_buy_params.slice(:size, :color, :quantity))
+    item_id = guest_buy_params[:item_id]
+
+    @cart = Cart.build_with_items(item_props:, item_id:)
+
+    if current_cart.present? && current_cart.find { |cart| cart.product_item_id == item_id }.blank?
+      p 'adding new item to cart'
+      existing_cart = current_cart.first
+
+      @cart.cart_id = existing_cart.cart_id
+      @cart.cart_token = existing_cart.cart_token
+      @cart.cart_token_expires_at = existing_cart.cart_token_expires_at
+
+      @cart_items_count = current_cart.count(1)
+    elsif current_cart.blank?
+      p 'building new cart'
+      @cart.cart_id = Cart.build_id
+      @cart.cart_token = Cart.build_token
+    else
+      p 'item alread present in cart. redirecting'
+      redirect_to my_review_carts_url
+      return
+    end
+
+    @cart.user_id = current_user.id
+
+    if @cart.valid? && @cart.save
+      p 'saving to cart'
+      session[:cart_token] = @cart.cart_token
+
+      return redirect_to my_review_carts_url
+    end
+
+    p 'error while finding cart or building'
+    @cart_error_msgs = @cart.errors.full_messages
+
+    respond_to do |format|
+      format.html do
+        flash[:error] = 'Something went wrong when adding to cart'
+        redirect_back fallback_location: product_url(item_id), status: 422
+      end
+
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          'cart-errors',
+          partial: 'products/cart_messages',
+          locals: { errors: @cart_error_msgs, success: [] }
+        )
+      end
+    end
+  end
+
   # for guest_buy in future maybe put it in a different controller
   def guest_buy
     order = OrderItemBuilder.new(guest_buy_params)
     raise Unprocessible unless order.valid?
 
-    session[:cart_token] = cart_token
+    session[:cart_token] = guest_cart_token
     session[cart_token] = guest_buy_params
 
     redirect_to guest_order_carts_url(token: cart_token)
@@ -158,8 +216,8 @@ class CheckoutsController < ApplicationController
 
   private
 
-  def cart_token
-    @cart_token ||= SecureRandom.urlsafe_base64(32, false)
+  def guest_cart_token
+    @guest_cart_token ||= SecureRandom.urlsafe_base64(32, false)
   end
 
   def can_buy_product; end

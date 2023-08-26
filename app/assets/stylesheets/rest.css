@@ -249,3 +249,20 @@
     margin-top: 0;
   }
 }
+
+.btn-cart-item-delete {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding-inline: 5px;
+  background: black;
+  border: none;
+  color: white;
+  font-weight: 700;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.cart-item-prod-title {
+  font-size: 0.8em;
+}

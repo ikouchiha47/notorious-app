@@ -61,9 +61,10 @@
                 <p class="price"><%= format_price @product.price %></p>
 
                 <div class="cta_component">
+                    <% buy_url = logged_in? ? direct_buy_checkouts_url : guest_buy_checkouts_url %>
                     <%= render partial: "products/form", locals: {
                         form: @guest_form,
-                        url: guest_buy_checkouts_url,
+                        url: buy_url,
                         method: :post,
                         product_details: @product_details,
                         submit_button_text: 'Buy Now',
