@@ -102,5 +102,9 @@ class GuestOrderBuilderForm < ApplicationForm
       order_item.update!(quantity: order_item.quantity - 1)
       @success = true
     end
+
+    # move to worker
+    Cart.mark_as_ordered('', cart_id)
+    @success
   end
 end

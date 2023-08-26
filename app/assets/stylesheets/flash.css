@@ -1,12 +1,11 @@
 .toast-wrapper {
     position: fixed;
-    top: 50px;
-    left: 5px;
-    /* right: 50%; */
-    /* transform: translateX(50%); */
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
     height: auto;
     min-height: 100%;
-    z-index: 1000;
+    z-index: 9999;
     
     display: flex;
     flex-direction: column;
@@ -52,13 +51,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* margin-bottom: 5px; */
-    font-size: 0.8em;
+    font-size: 0.92em;
     gap: 1em;
 }
 
 .toast-body span {
-    font-size: 0.8em;
+    font-size: 1em;
     font-weight: 500;
 }
 

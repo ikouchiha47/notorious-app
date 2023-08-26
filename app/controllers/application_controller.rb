@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
     flash[:error] = err.message
     purge_tokens
 
-    # redirect_to root_path
+    redirect_to root_path
   end
 
   def purge_tokens

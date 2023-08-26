@@ -331,20 +331,23 @@ textarea {
     }
 
     .nav-toggle {
-        display: block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
         cursor: pointer;
         position: absolute;
         width: 2em;
         background-color: black;
         aspect-ratio: 1;
-        /* top: 2em; */
         right: var(--content-gutter);
-        z-index: 9999;
+        z-index: 9998;
         border: none;
         color: var(--white);
     }
 
     .nav-toggle-icon {
+        line-height: normal;
         display: none;
     }
     .nav-toggle-icon.show {

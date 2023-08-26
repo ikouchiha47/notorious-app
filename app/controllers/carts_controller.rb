@@ -33,11 +33,11 @@ class CartsController < ApplicationController
 
   def show
     # calling cart_items here sets the @cart_items to be in view
-    p 'showoff'
     unless cart_items.present?
       flash[:notice] = 'You cart is empty'
-      p 'cart empty'
-      return redirect_back(fallback_location: products_url), status: 200
+      session.delete(:cart_token)
+
+      return redirect_to products_url, status: 200
     end
 
     @addresses = Address.viewable(current_user.id)

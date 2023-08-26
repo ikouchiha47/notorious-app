@@ -24,8 +24,9 @@ class MyOrderBuilderForm < ApplicationForm
     amount
     raise OrderErrors::ValidationFailed unless valid?
 
+    cart_id = cart_items.first.id
     @order = Order.create!({
-                             cart_id: cart_items.first.id,
+                             cart_id:,
                              user_id:,
                              address_id:,
                              amount:,
@@ -35,5 +36,8 @@ class MyOrderBuilderForm < ApplicationForm
                              order_token_expires_at: 2.days.since.utc
                            })
     @success = true
+
+    Cart.mark_as_ordered('', cart_id)
+    @success
   end
 end

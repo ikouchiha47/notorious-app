@@ -5,6 +5,11 @@ class Cart < ApplicationRecord
   validates :cart_token, :cart_token_expires_at, presence: true
   validates :quantity, numericality: { in: 1..5 }
 
+  STATE_PROCESSING = 'processing'.freeze
+  STATE_ORDERED = 'ordered'.freeze
+
+  scope :processing, -> { where(cart_state: STATE_PROCESSING) }
+
   # has_many :product_items,
   #          foreign_key: 'id',
   #          class_name: 'ProductItem',
@@ -29,7 +34,7 @@ class Cart < ApplicationRecord
     def build_with_items(item_id:, item_props: ItemProperties.new)
       Cart.new(
         cart_token_expires_at: 4.days.since.utc,
-        cart_state: 'processing',
+        cart_state: STATE_PROCESSING,
         shareable: false,
         product_item_id: item_id,
         item_properties: item_props.encode,
@@ -40,9 +45,13 @@ class Cart < ApplicationRecord
     def product_items_for_user(user_id, cart_token)
       Cart.joins(product_item: :product).where(
         cart_token:,
-        cart_state: 'processing',
+        cart_state: STATE_PROCESSING,
         user_id:
       ).where('carts.product_item_id = product_items.id')
+    end
+
+    def mark_as_ordered(cart_token, cart_id)
+      Cart.where(cart_token:).or(Cart.where(cart_id:)).update_all(cart_state: STATE_ORDERED)
     end
   end
 end

@@ -8,6 +8,10 @@
       } %>
 
   <% end %>
+
+  <%= turbo_stream.replace 'cart-items-count' do %>
+    <%= render partial: 'layouts/cart_items_count', locals: {cart_items_count:} %>
+  <% end %>
 <% end %>
 
 <%= turbo_stream.replace 'order-form-error' do %>

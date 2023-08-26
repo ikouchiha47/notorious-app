@@ -40,7 +40,7 @@ module ApplicationHelper
   end
 
   def current_cart
-    @current_cart ||= Cart.where(cart_token: session[:cart_token])
+    @current_cart ||= Cart.processing.where(cart_token: session[:cart_token])
   end
 
   def logged_in?

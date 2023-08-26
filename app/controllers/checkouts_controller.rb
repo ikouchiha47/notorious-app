@@ -1,6 +1,8 @@
 class CheckoutsController < ApplicationController
   def create
     unless current_cart.present?
+      sesstion.delete(:cart_token)
+
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace(
@@ -16,6 +18,7 @@ class CheckoutsController < ApplicationController
       return
     end
 
+    # TODO: need to check this per user basis as well, to allow one item per user
     if Order.exists?(cart_id: current_cart.first.cart_id)
       @errors = ['Order is already created, We will get back to you in case.']
       respond_to do |format|
@@ -45,6 +48,8 @@ class CheckoutsController < ApplicationController
 
     begin
       @form.save!
+
+      session.delete(:cart_token)
 
       respond_to do |format|
         format.turbo_stream
