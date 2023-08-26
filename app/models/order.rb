@@ -1,6 +1,7 @@
 class Order < ApplicationRecord
   include Uidable
   # include AASM
+  self.primary_key = 'id'
 
   validates :cart_id, :user_id, :address_id, :amount, presence: true
 

@@ -1,0 +1,5 @@
+<%= turbo_frame_tag 'order-form-error' do %>
+  <% errors.each do |error| %>
+    <span class="form-inline-error" style="font-size: 0.9em"><%= error %></span>
+  <% end %>
+<% end %>

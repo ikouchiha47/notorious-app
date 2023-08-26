@@ -1,21 +1,9 @@
 class MyOrderBuilderForm < ApplicationForm
   attr_accessor :success, :address_id, :user_id, :cart_token
 
-  validates :address_id, :user_id, :cart_token, presence: true
+  attr_reader :order
 
-  # private
-  #
-  # def all_items_valid?
-  #   items.each do |item|
-  #     next if item.valid?
-  #
-  #     item.errors.full_messages.each do |full_message|
-  #       errors.add(:base, "Product was invalid: #{full_message}")
-  #     end
-  #   end
-  #
-  #   throw(:abort) if errors.any?
-  # end
+  validates :address_id, :user_id, :cart_token, presence: true
 
   def cart_items
     @cart_items ||= Cart.product_items_for_user(user_id, cart_token)
@@ -31,10 +19,10 @@ class MyOrderBuilderForm < ApplicationForm
   end
 
   def save!
-    @success = fals
+    @success = false
 
     amount
-    return unless valid?
+    raise OrderErrors::ValidationFailed unless valid?
 
     @order = Order.create!({
                              cart_id: cart_items.first.id,

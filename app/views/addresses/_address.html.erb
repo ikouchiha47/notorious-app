@@ -8,12 +8,14 @@
     <%= address.zip_code %>
     </span>
   </div>
-  <span class="address-details-phone">
+  <!--
+    <span class="address-details-phone">
     <%= simple_mask(address.alternate_number, 5) %>
-  </span>
+    </span>
+  -->
 
   <div class="address-actions flex flex-row space-between" id='<%= dom_id(address) %>'>
-    <%= link_to "Edit", edit_address_path(address) %>
+    <!-- <%= link_to "Edit", edit_address_path(address) %> -->
     <%= button_to "Delete", delete_address_path(address), method: :delete, data: { confirm: 'Are you sure?', disable_with: 'loading...' } %>
   </div>
 </section>

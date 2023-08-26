@@ -24,9 +24,19 @@ module ApplicationHelper
   end
 
   def current_token
-    return nil unless session[:access_token].present? && session[:refresh_token].present?
+    raise Unauthorized unless session[:access_token].present? && session[:refresh_token].present?
 
+    # p session[:access_token]
+    # p 'before'
     @current_token ||= Token.find_by_token(session[:access_token], session[:refresh_token])
+    # p @current_token.session_token
+
+    session[:access_token] = @current_token.session_token unless @current_token.session_token == session[:access_token]
+    # p @current_token.session_token
+    # p 'after'
+    # p session[:access_token]
+
+    @current_token
   end
 
   def current_cart
@@ -34,7 +44,9 @@ module ApplicationHelper
   end
 
   def logged_in?
-    session[:access_token].present? && session[:refresh_token].present?
+    current_token.present?
+  rescue StandardError
+    false
   end
 
   def flashes(type, texts)

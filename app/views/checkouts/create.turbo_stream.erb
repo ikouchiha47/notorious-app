@@ -1,0 +1,16 @@
+<% if @form&.success %>
+  <%= turbo_stream.replace 'pay-me-now' do %>
+    <%= render partial: 'carts/pay',
+      locals: {
+        my_order: true,
+        order_token: @form.order.order_token,
+        show_payment: @form.success
+      } %>
+
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace 'order-form-error' do %>
+  <% errors = @errors || [] %>
+  <%= render partial: 'carts/order_error', locals: { errors: errors } %>
+<% end %>

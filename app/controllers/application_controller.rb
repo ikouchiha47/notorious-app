@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   rescue_from Unauthorized, with: :handle_application_error
   rescue_from Unprocessible, with: :handle_application_error
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  rescue_from StandardError, with: :handle_application_error # need to change this
 
   helper_method :breadcrumbs, :cart_items_count
 
@@ -56,7 +57,16 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_application_error(err)
+    p err
     flash[:error] = err.message
-    redirect_back fallback_location: root_path
+    purge_tokens
+
+    # redirect_to root_path
+  end
+
+  def purge_tokens
+    session.delete(:cart_token)
+    session.delete(:access_token)
+    session.delete(:refresh_token)
   end
 end

@@ -1,2 +1,17 @@
-<span href="#" class='place_order_btn_lg btn-pay'>Pay</span>
+<% show_payment ||= false %>
+<% my_order ||= false %>
+<% oos ||= false %>
+
+<% if oos.present? %>
+  <div class='place_order_btn_lg btn-outofstock'>Sold Out</div>
+<% elsif show_payment.present? %>
+  <span href="#" class='place_order_btn_lg btn-pay'>Pay</span>
+<% elsif my_order.present? %>
+  <%= simple_form_for order_form, url: place_my_order_checkouts_url, method: :post, html: { class: 'hidden-form' } do |f| %>
+    <%= f.input :address_id, as: :hidden, required: true, input_html: {data: { 'address-target': 'buyAddressID' }} %>
+    <%= f.submit "Place Order", class: 'btn place_order_btn_lg' %>
+  <% end %>
+<% else %>
+  <%= gf.button :submit, "Place Order", { class: 'place_order_btn_lg' } %>
+<% end %>
 

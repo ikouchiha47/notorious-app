@@ -189,7 +189,7 @@
 
 @media (min-width: 50em) {
   #cart-errors {
-    align-items: flex-end
+    align-items: flex-end;
   }
 }
 /* cart items error end */
@@ -200,6 +200,7 @@
   gap: 2em;
   overflow-x: scroll;
   padding-bottom: 1em;
+  flex-wrap: nowrap;
 }
 
 .address-container {
@@ -207,6 +208,9 @@
   border: 1px solid black;
   padding: 1em;
   cursor: pointer;
+  font-size: 0.6em;
+
+  width: 230px;
 }
 
 .address-container.selected {
@@ -214,7 +218,34 @@
   color: white;
 }
 
+.address-details-line-a {
+  width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.address-actions {
+  padding-top: 1.2em;
+}
+
 .address-container.selected .address-actions a {
   color: white;
 }
+
+
 /* address wrapper end */
+
+#my-order-form {
+  width: 100vw;
+}
+
+@media (min-width: 64em) {
+  #my-order-form {
+    width: auto;
+  }
+
+  .checkout {
+    margin-top: 0;
+  }
+}

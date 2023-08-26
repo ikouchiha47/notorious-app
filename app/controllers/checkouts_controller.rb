@@ -1,4 +1,63 @@
 class CheckoutsController < ApplicationController
+  def create
+    unless current_cart.present?
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            'order-form-error',
+            partial: 'carts/order_error',
+            locals: {
+              errors: ['Something is not right. Please logout and login again.']
+            }
+          )
+        end
+      end
+
+      return
+    end
+
+    if Order.exists?(cart_id: current_cart.first.cart_id)
+      @errors = ['Order is already created, We will get back to you in case.']
+      respond_to do |format|
+        format.turbo_stream
+      end
+
+      return
+    end
+
+    @form = MyOrderBuilderForm.new(my_order_builder_params)
+
+    unless @form.valid?
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            'order-form-error',
+            partial: 'carts/order_error',
+            locals: {
+              errors: @form.errors.full_messages
+            }
+          )
+        end
+      end
+
+      return
+    end
+
+    begin
+      @form.save!
+
+      respond_to do |format|
+        format.turbo_stream
+      end
+    rescue StandardError => e
+      @errors = [e.message]
+      respond_to do |format|
+        format.turbo_stream
+      end
+    end
+  end
+
+  # for guest_buy in future maybe put it in a different controller
   def guest_buy
     order = OrderItemBuilder.new(guest_buy_params)
     raise Unprocessible unless order.valid?
@@ -102,6 +161,14 @@ class CheckoutsController < ApplicationController
 
   def review_order_params
     params.require(:checkout).permit(:item_ids)
+  end
+
+  def my_order_builder_params
+    my_order_builder_form.merge(user_id: current_user.id, cart_token: current_cart.first.cart_token)
+  end
+
+  def my_order_builder_form
+    params.require(:my_order_builder_form).permit(:address_id)
   end
 
   def guest_buy_params
