@@ -126,9 +126,9 @@ class CheckoutsController < ApplicationController
     raise Unprocessible unless order.valid?
 
     session[:cart_token] = guest_cart_token
-    session[cart_token] = guest_buy_params
+    session[guest_cart_token] = guest_buy_params
 
-    redirect_to guest_order_carts_url(token: cart_token)
+    redirect_to guest_order_carts_url(token: guest_cart_token)
   end
 
   def guest_create
