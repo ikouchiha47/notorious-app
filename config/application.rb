@@ -33,6 +33,6 @@ module Thisfuckingapp
     # config.time_zone = "Central Time (US & Canada)"
     config.eager_load_paths << Rails.root.join('lib/middleware')
     config.hosts << 'mr-notorious.shop'
-    config.middleware.use ::Middleware::PathHandler
+    config.middleware.use PathHandler
   end
 end

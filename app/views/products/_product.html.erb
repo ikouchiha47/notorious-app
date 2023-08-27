@@ -1,7 +1,7 @@
 <li id="<%= dom_id product %>">
-  <img src='<%= image_url(product.promoted_image) %>'/>
+  <img src='<%= image_path(product.promoted_image) %>'/>
   <span><%= product.title %></span>
 
-  <a class="card-overlay" href="<%= product_url(product) %>"></a>
+  <a class="card-overlay" href="<%= product_path(product) %>"></a>
 </li>
 
