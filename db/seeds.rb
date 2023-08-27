@@ -126,9 +126,9 @@ def create_guest_user
   )
 end
 
-# create_guest_user
+create_guest_user
 
-# build_categories
+build_categories
 build_products
 
 build_items
