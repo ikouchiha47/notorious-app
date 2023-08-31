@@ -23,23 +23,33 @@ def build_products
   category_id = Category.first.id
 
   10.times do |i|
-    images = 'mockups/chemical_x_black_flat.png'
+    # images = 'mockups/chemical_x_black_flat.png'
+    imager = ImageWrapper.new(root_path: 'mockups')
+
+    imager.images << 'chemical_x_black_flat.png'
+    imager.images << 'chemical_x_black_flat.png'
     title = 'Chemical X'
 
     if (i % 3).zero?
-      images = 'mockups/chemical_x_white_man.png'
+      imager.images = ['chemical_x_white_man.png']
+      imager.images << 'chemical_x_white_man.png'
+
       title = 'Brains of family'
     elsif (i % 5).zero?
-      images = 'mockups/chemical_x_black_man.png'
+      imager.images = ['chemical_x_black_man.png']
+      imager.images << 'chemical_x_black_man.png'
+
       title = 'Sawadika'
     end
+
+    raise imager.errors.full_messages unless imager.valid?
 
     Product.create!({
                       sku:,
                       sku_provider:,
                       title:,
                       price: 1200 * 100,
-                      images:,
+                      images: imager.to_s,
                       available: true,
                       gender: 'unisex',
                       category_id:,
@@ -48,23 +58,32 @@ def build_products
   end
 
   10.times do |i|
-    images = 'mockups/chemical_x_black_flat.png'
+    imager = ImageWrapper.new(root_path: 'mockups')
+
+    imager.images << 'chemical_x_black_flat.png'
+    imager.images << 'chemical_x_black_flat.png'
+
     title = 'Chemical X'
 
     if (i % 3).zero?
-      images = 'mockups/chemical_x_black_man.png'
+      imager.images = ['chemical_x_black_man.png']
+      imager.images << 'chemical_x_black_man.png'
+
       title = 'Pizza senses'
     elsif (i % 5).zero?
-      images = 'mockups/chemical_x_white_man.png'
+      imager.images = ['chemical_x_white_man.png']
+      imager.images << 'chemical_x_white_man.png'
       title = 'Graphic'
     end
+
+    raise imager.errors.full_messages unless imager.valid?
 
     Product.create!({
                       sku:,
                       sku_provider:,
                       title:,
                       price: 1497 * 100,
-                      images:,
+                      images: imager.to_s,
                       available: true,
                       gender: 'unisex',
                       category_id:,
@@ -126,9 +145,9 @@ def create_guest_user
   )
 end
 
-create_guest_user
+# create_guest_user
 
-build_categories
+# build_categories
 build_products
 
 build_items

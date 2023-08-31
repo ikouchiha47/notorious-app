@@ -91,3 +91,5 @@ gem "countries", "~> 5.5"
 gem "aasm", "~> 5.5"
 
 gem "better_validations", "~> 0.1.0", :git => "https://github.com/ikouchiha47/better_validations.git"
+
+gem "mini_magick", "~> 4.12"

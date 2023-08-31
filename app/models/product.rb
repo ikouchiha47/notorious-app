@@ -2,9 +2,9 @@ class Product < ApplicationRecord # :nodoc:
   include Uidable
 
   GARMENT_TYPES = {
-    "#{::GarmentTypes::OVER_TEE}" => 'Oversized Tees',
-    "#{::GarmentTypes::REGULAR_TEE}" => 'Regular Tees',
-    "#{::GarmentTypes::PANTIES}" => 'Baggy Tracks'
+    ::GarmentTypes::OVER_TEE => 'Oversized Tees'.freeze,
+    ::GarmentTypes::REGULAR_TEE => 'Regular Tees'.freeze,
+    ::GarmentTypes::PANTIES => 'Baggy Tracks'.freeze
   }
 
   has_one :product_item
@@ -28,11 +28,20 @@ class Product < ApplicationRecord # :nodoc:
 
   # created_at, #updated_at
 
-  def promoted_image
-    splits = images.split(',')
-    return 'https://placehold.co/400x400,https://placehold.co/400x400' unless splits.present?
+  def images
+    ImageWrapper.from_json(self[:images])
+  end
 
-    splits[0]
+  def promoted_image
+    return 'https://placehold.co/400x400' unless images.present?
+
+    images.high(images.images[0])
+  end
+
+  def thumbs
+    images.images.map do |img|
+      images.thumb(img)
+    end
   end
 
   def product_images
