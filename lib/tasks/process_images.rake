@@ -11,7 +11,7 @@ namespace :thumbnails do
     Dir.glob(File.join(designs_dir, '*.png')).each do |image_path|
       image = MiniMagick::Image.open(image_path)
 
-      image.resize '500x400>'
+      image.resize '500x400!'
       image.format 'png'
       image.quality 80
 
@@ -34,11 +34,11 @@ namespace :highres do
     Dir.glob(File.join(designs_dir, '*.png')).each do |image_path|
       image = MiniMagick::Image.open(image_path)
 
-      image.resize '1600x1280>'
-      image.format 'png'
-      image.quality 90
+      image.resize '1920x1536!'
+      image.quality 100
+      image.format 'webp'
 
-      out_path = File.join(thumbnails_dir, File.basename(image_path))
+      out_path = File.join(thumbnails_dir, File.basename(image_path, '.png') + '.webp')
       p out_path
 
       image.write(out_path)

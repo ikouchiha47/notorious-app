@@ -20,7 +20,7 @@
 
 .product_details__image_wrapper {
   width: 100%;
-  aspect-ratio: 4/5;
+  aspect-ratio: 5/4;
 }
 
 .product_details__image_wrapper img {
