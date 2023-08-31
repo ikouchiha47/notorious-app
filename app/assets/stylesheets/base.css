@@ -240,7 +240,7 @@ textarea {
 
     min-height: 60px;
     padding: var(--content-gutter);
-    padding-right: 0;
+    padding-inline: 0;
     padding-bottom: 1em;
 }
 
@@ -317,7 +317,7 @@ textarea {
 
         position: fixed;
         inset: 0 0 0 45%;
-        padding: min(30vh, 10em) var(--content-gutter);
+        padding: min(14vh, 10em) var(--content-gutter);
         transition: transform 250ms ease-out;
     }
 
@@ -338,20 +338,27 @@ textarea {
         cursor: pointer;
         position: absolute;
         width: 2em;
-        background-color: black;
+        background-color: var(--white);
         aspect-ratio: 1;
         right: var(--content-gutter);
         z-index: 9998;
         border: none;
-        color: var(--white);
+        color: var(--black);
     }
 
     .nav-toggle-icon {
         line-height: normal;
         display: none;
+        font-size: 2em;
     }
+
     .nav-toggle-icon.show {
         display: block;
+    }
+
+    .nav-toggle-icon #close {
+        background: hsl(0 0% 0% / 0.8);
+        color: var(--white);
     }
 }
 

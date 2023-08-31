@@ -40,8 +40,8 @@
 }
 
 .product-items-listing li:hover {
-    transform: scale(1.2);
-    z-index: 100;
+    /* transform: scale(1.2); */
+    /* z-index: 100; */
 }
 
 .product-items-listing span {
@@ -57,12 +57,13 @@
 #plain-tees {
     --n_repeat: 2;
 }
+ 
 
 @media (max-width: 35em) {
     .product-items-listing {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 1.2em;
+        gap: 0.2em;
     }
 
     .product-items-listing li {
@@ -76,6 +77,14 @@
         display: block;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+}
+
+@media (max-width: 20em) {
+    .product-items-listing {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.2em;
     }
 }
 
