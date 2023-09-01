@@ -1,17 +1,20 @@
 class ImageWrapper
   include ActiveModel::Model
 
-  attr_accessor :images
+  attr_accessor :images, :high_format, :thumb_format
 
   validate :non_empty
 
   def initialize(root_path:)
     @root_path = root_path
     @images = []
+    @thumb_format = 'png'
+    @high_format = 'webp'
   end
 
   def thumb(file_name)
-    "#{@root_path}/thumbs/#{file_name}"
+    file_name = File.basename(file_name, File.extname(file_name))
+    "#{@root_path}/thumbs/#{file_name}.#{@thumb_format}"
   end
 
   def base(file_name)
@@ -19,7 +22,8 @@ class ImageWrapper
   end
 
   def high(file_name)
-    "#{@root_path}/high/#{file_name}"
+    file_name = File.basename(file_name, File.extname(file_name))
+    "#{@root_path}/high/#{file_name}.#{@high_format}"
   end
 
   def first
