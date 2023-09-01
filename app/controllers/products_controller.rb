@@ -4,7 +4,8 @@ class ProductsController < ApplicationController
 
   def index
     @categories = Category.all
-    @products = Product.available.where(category_id: @categories.pluck(:id))
+    @products = Product.available.joins(:product_item)
+      .where(category_id: @categories.pluck(:id))
   end
 
   def show
