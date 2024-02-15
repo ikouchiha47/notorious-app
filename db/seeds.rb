@@ -139,15 +139,15 @@ end
 
 def create_guest_user
   User.first_or_create!(
-    password: 'ikea',
+    password: 'ike@12345',
     country_code: 0, number: 1_234_560,
     verified: false, email: 'vindy.ssa@mailinator.com'
   )
 end
 
-# create_guest_user
+create_guest_user
 
-# build_categories
+build_categories
 build_products
 
 build_items
