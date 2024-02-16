@@ -75,6 +75,8 @@ function publish() {
 
 cmd="$1"
 
+echo "invokiing $cmd"
+
 case "$cmd" in
   "get:aws:id")
     get_account_id
@@ -94,10 +96,8 @@ case "$cmd" in
     ;;
 
   *)
-    assert_or_panic "RAILS_MASTER_KEY"
-    assert_or_panic "AWS_ACCOUNT"
-
-    docker_build_image
+    echo "invalid command invoked"
+    exit 1
     ;;
 esac
 
