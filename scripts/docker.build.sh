@@ -1,12 +1,19 @@
 #!/bin/sh
-set -e
-# Upload image to ecr
-# :wq
+
+set -eE -o functrace
+#
+# Build and Upload image to ecr
+#
 APP_NAME=notorious
 AWS_PROFILE="${AWS_PROFILE:-default}"
 AWS_REGION="${AWS_REGION:-ap-south-1}"
+DOCKER_FILE="${DOCKERFILE:Dockerfile}"
 
 ECR_URL="${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+
+VERSION=$(git rev-parse --short=8 HEAD)
+DOCKER_BUILD_TAG="${APP_NAME}:${VERSION}"
+
 
 function assert_or_panic() {
   local variable_name="$1"
@@ -16,6 +23,14 @@ function assert_or_panic() {
     exit 1
   fi
 }
+
+function failure() {
+  local lineno=$1
+  local msg=$2
+  echo "Failed at $lineno: $msg"
+}
+
+trap 'failure ${LINENO} "$BASH_COMMAND"' ERR
 
 function check_ecr_exists() {
   _=$(aws ecr describe-repositories --repository-name "${APP_NAME}" --profile "${AWS_PROFILE}" --region "${AWS_REGION}")
@@ -33,11 +48,8 @@ function get_account_id() {
 
 
 function docker_build_image() {
-  VERSION=$(git rev-parse --short=8 HEAD)
-  DOCKER_BUILD_TAG="${APP_NAME}:${VERSION}"
-
   echo "Building docker image with tag $DOCKER_BUILD_TAG"
-  docker build --platform linux/amd64 --build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY} -t "${DOCKER_BUILD_TAG}" .
+  docker build --platform linux/amd64 -f "${DOCKER_FILE}" --build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY} -t "${DOCKER_BUILD_TAG}" .
 }
 
 function docker_push_ecr() {
@@ -70,6 +82,7 @@ case "$cmd" in
     
   "publish")
     assert_or_panic "AWS_ACCOUNT"
+
     publish
     ;;
 

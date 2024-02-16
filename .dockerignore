@@ -1,0 +1,5 @@
+bin/
+tmp/
+infrafiles/
+playbooks/
+log/
